@@ -1,0 +1,27 @@
+{
+  "name": "crap-map-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salockhart/CSCI-4176-Project---Team-2.git"
+  },
+  "author": "CSCI 4176 Team 2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/salockhart/CSCI-4176-Project---Team-2/issues"
+  },
+  "homepage": "https://github.com/salockhart/CSCI-4176-Project---Team-2#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
