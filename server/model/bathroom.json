@@ -1,0 +1,31 @@
+{
+    "name": {
+        "type": "String",
+        "required": true
+    },
+    "location": {
+        "lat":  {
+            "type": "String",
+            "required": true
+        },
+        "long": {
+            "type": "String",
+            "required": true
+        }
+    },
+    "images": "[String]",
+    "reviews": [
+        {
+            "user": {
+                "type": "String"
+            },
+            "stars": {
+                "type": "Number",
+                "required": true
+            },
+            "review": {
+                "type": "String"
+            }
+        }
+    ]
+}
