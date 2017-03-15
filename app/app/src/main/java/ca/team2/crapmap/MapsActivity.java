@@ -1,15 +1,14 @@
 package ca.team2.crapmap;
 
 import android.app.Activity;
-import android.app.admin.SecurityLog;
+import android.app.ActivityOptions;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.Manifest;
@@ -17,7 +16,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -43,7 +41,10 @@ public class MapsActivity extends AppCompatActivity implements
     private SupportMapFragment mapFragment;
     private Marker currentLocationMarker;
 
-    private final int LOCATION_PERMISSION_REQUEST = 1;
+    private static final int LOCATION_PERMISSION_REQUEST = 1;
+
+    private static final int NEW_BATHROOM_CREATED = 101;
+    private static final int NEW_COMMENT_CREATED = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,7 @@ public class MapsActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                openNewBathroomActivity();
             }
         });
 
@@ -95,12 +95,21 @@ public class MapsActivity extends AppCompatActivity implements
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
             }
         } else {
             buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
         }
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
+                //will pass database ID or something
+                //could also pass full serialized content to reduce requests to server
+                intent.putExtra("bathroom_id","");
+                startActivity(intent);
+            }
+        });
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -124,6 +133,8 @@ public class MapsActivity extends AppCompatActivity implements
             currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
         }
 
         pollingLocationRequest = new LocationRequest();
@@ -156,7 +167,27 @@ public class MapsActivity extends AppCompatActivity implements
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(8));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+    }
+
+    private void openNewBathroomActivity() {
+        Intent intent = new Intent(this, NewBathroomActivity.class);
+        startActivityForResult(intent, NEW_BATHROOM_CREATED);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case(NEW_BATHROOM_CREATED): {
+                if (resultCode == Activity.RESULT_OK) {
+                    //pull new data from server, refresh map
+                } else {
+                    //do nothing
+                }
+                break;
+            }
+        }
     }
 
     private boolean checkLocationPermission() {
@@ -215,7 +246,6 @@ public class MapsActivity extends AppCompatActivity implements
                         if (googleApiClient == null) {
                             buildGoogleApiClient();
                         }
-                        mMap.setMyLocationEnabled(true);
                     }
 
                 } else {
