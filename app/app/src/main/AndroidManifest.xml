@@ -15,15 +15,12 @@ package="ca.team2.crapmap">
             -->
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity" android:label="CrapMap">
+        <activity android:name=".MapsActivity" android:label="CrapMap">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MapsActivity" android:label="@string/app_name">
-
-        </activity>
     </application>
 </manifest>
