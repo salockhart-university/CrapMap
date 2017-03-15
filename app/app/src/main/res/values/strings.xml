@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">CrapMap</string>
+    <string name="permission_title_location">Why do you need my location?</string>
+    <string name="permission_explanation_location">CrapMap uses your current location to suggest nearby bathrooms. We do not store this data.</string>
+    <string name="permission_confirmation">OK</string>
 </resources>
