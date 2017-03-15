@@ -4,6 +4,7 @@ import android.app.admin.SecurityLog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -45,42 +46,24 @@ public class MapsActivity extends FragmentActivity implements
         setContentView(R.layout.activity_maps);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        if (checkLocationPermission()) {
-            onPermissionGranted();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkLocationPermission();
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (googleApiClient != null) {
-            googleApiClient.connect();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        googleApiClient.disconnect();
-        super.onStop();
-    }
-
-    /*
-     * Executed when the app gains location access permissions
-     */
-    public void onPermissionGranted() {
-        try {
-            Log.i("onPermissionGranted","start the fancy stuff");
-            mMap.setMyLocationEnabled(true);
-            googleApiClient.connect();
-        } catch (SecurityException e) {
-            throw e;
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (googleApiClient != null) {
+//            googleApiClient.connect();
+//        }
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        googleApiClient.disconnect();
+//        super.onStop();
+//    }
 
     /**
      * Manipulates the map once available.
@@ -90,7 +73,27 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        checkLocationPermission();
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                mMap.setMyLocationEnabled(true);
+            }
+        } else {
+            buildGoogleApiClient();
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
     }
 
     /*
@@ -99,18 +102,22 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.i("googleApiClient","onConnected executing");
-        if (checkLocationPermission()) {
-            Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (lastKnownLocation != null) {
-                currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-            }
-            pollingLocationRequest = new LocationRequest();
-            pollingLocationRequest.setInterval(5000);
-            pollingLocationRequest.setFastestInterval(3000);
-            pollingLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, pollingLocationRequest, this);
+
+        Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (lastKnownLocation != null) {
+            currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            mMap.clear();
+            mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+        }
+
+        pollingLocationRequest = new LocationRequest();
+        pollingLocationRequest.setInterval(5000);
+        pollingLocationRequest.setFastestInterval(3000);
+        pollingLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,  pollingLocationRequest, this);
         }
     }
 
@@ -133,6 +140,7 @@ public class MapsActivity extends FragmentActivity implements
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(8));
     }
 
     private boolean checkLocationPermission() {
@@ -158,7 +166,6 @@ public class MapsActivity extends FragmentActivity implements
                         })
                         .setIcon(android.R.drawable.ic_dialog_map)
                         .show();
-                return false;
 
             } else {
 
@@ -166,9 +173,10 @@ public class MapsActivity extends FragmentActivity implements
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_PERMISSION_REQUEST);
-                return false;
+
 
             }
+            return false;
         } else {
             return true;
         }
@@ -184,7 +192,15 @@ public class MapsActivity extends FragmentActivity implements
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     Log.i("permission","GRANTED");
-                    onPermissionGranted();
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        if (googleApiClient == null) {
+                            buildGoogleApiClient();
+                        }
+                        mMap.setMyLocationEnabled(true);
+                    }
 
                 } else {
                     // permission denied, boo!
