@@ -205,6 +205,8 @@ public class MapsActivity extends AppCompatActivity implements
 
     private void openNewBathroomActivity() {
         Intent intent = new Intent(this, NewBathroomActivity.class);
+        intent.putExtra("latitude", currentLocation.latitude);
+        intent.putExtra("longitude", currentLocation.longitude);
         startActivityForResult(intent, NEW_BATHROOM_CREATED);
     }
 
@@ -216,6 +218,10 @@ public class MapsActivity extends AppCompatActivity implements
                 if (resultCode == Activity.RESULT_OK) {
                     mMap.clear();
                     //TODO: get location again here too, or just make a new marker
+                    String name = data.getStringExtra("name");
+                    LatLng location = new LatLng(data.getDoubleExtra("latitude", 0),
+                            data.getDoubleExtra("longitude", 0));
+                    //TODO: create new bathroom with return data
                     getBathrooms();
                 } else {
                     //do nothing
