@@ -9,7 +9,7 @@ public class Review {
     private int stars;
     private String review;
 
-    public Review(int start, String review) {
+    public Review(int stars, String review) {
         this.user = null;
         this.stars = stars;
         this.review = review;
