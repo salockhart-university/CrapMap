@@ -29,7 +29,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +42,7 @@ public class MapsActivity extends AppCompatActivity implements
     private LatLng currentLocation;
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
-    private ClusterableBathroomMarker currentLocationMarker;
-    private ClusterManager<ClusterableBathroomMarker> clusterManager;
+    private Marker currentLocationMarker;
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
@@ -82,9 +80,6 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        clusterManager = new ClusterManager<ClusterableBathroomMarker>(this,mMap);
-        mMap.setOnCameraIdleListener(clusterManager);
-        mMap.setOnMarkerClickListener(clusterManager);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -128,15 +123,14 @@ public class MapsActivity extends AppCompatActivity implements
         if (lastKnownLocation != null) {
             currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             mMap.clear();
-            clusterManager.clearItems();
             mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
 
         pollingLocationRequest = new LocationRequest();
-        pollingLocationRequest.setInterval(1000000);
-        pollingLocationRequest.setFastestInterval(100000);
+//        pollingLocationRequest.setInterval(1000000);
+//        pollingLocationRequest.setFastestInterval(100000);
         pollingLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -158,6 +152,9 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onLocationChanged(Location newLocation) {
         mMap.clear();
+        if (currentLocationMarker != null) {
+            currentLocationMarker.remove();
+        }
         //need to compare locations, if too far apart, refresh bathrooms
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
@@ -172,9 +169,12 @@ public class MapsActivity extends AppCompatActivity implements
         getTask.execute();
     }
 
-    private void clearBathroomMarkers() {
-        clusterManager.clearItems();
-    }
+//    private void clearBathroomMarkers() {
+//        for (Marker marker : bathroomMarkers) {
+//            marker.remove();
+//        }
+//        bathroomMarkers.clear();
+//    }
 
     public void bathroomCallback(Object result) {
         ArrayList<Bathroom> bathroomList = (ArrayList<Bathroom>)result;
@@ -202,12 +202,7 @@ public class MapsActivity extends AppCompatActivity implements
             }
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             //need to somehow get these markers into a list
-            clusterManager.addItem(new ClusterableBathroomMarker(
-                    options.getPosition().latitude,
-                    options.getPosition().longitude,
-                    options.getTitle(),
-                    options.getSnippet()
-            ));
+            mMap.addMarker(options);
         }
     }
 

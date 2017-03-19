@@ -2,8 +2,10 @@ package ca.team2.crapmap;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +20,6 @@ public class NewBathroomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_bathroom);
 
-        back = (Button)findViewById(R.id.new_bathroom_back);
         submit = (Button)findViewById(R.id.new_bathroom_submit);
         name = (EditText)findViewById(R.id.new_bathroom_name);
         latitude = getIntent().getDoubleExtra("latitude", 0);
