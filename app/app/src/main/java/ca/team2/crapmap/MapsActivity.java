@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,7 +32,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
@@ -43,6 +43,7 @@ public class MapsActivity extends AppCompatActivity implements
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private Marker currentLocationMarker;
+    private ArrayList<Marker> bathroomMarkers;
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
@@ -80,6 +81,7 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        bathroomMarkers = new ArrayList<>();
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -94,11 +96,14 @@ public class MapsActivity extends AppCompatActivity implements
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
-                //will pass database ID or something
-                //could also pass full serialized content to reduce requests to server
-                //intent.putExtra("bathroom", marker.getSomething());
-                startActivity(intent);
+                if (marker.getId() != currentLocationMarker.getId()) {
+                    Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
+                    Bathroom bathroom = (Bathroom)marker.getTag();
+                    if (bathroom != null) {
+                        intent.putExtra("bathroom", bathroom);
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
@@ -123,7 +128,7 @@ public class MapsActivity extends AppCompatActivity implements
         if (lastKnownLocation != null) {
             currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+            currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
@@ -157,7 +162,7 @@ public class MapsActivity extends AppCompatActivity implements
         }
         //need to compare locations, if too far apart, refresh bathrooms
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+        currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         getBathrooms();
@@ -169,12 +174,12 @@ public class MapsActivity extends AppCompatActivity implements
         getTask.execute();
     }
 
-//    private void clearBathroomMarkers() {
-//        for (Marker marker : bathroomMarkers) {
-//            marker.remove();
-//        }
-//        bathroomMarkers.clear();
-//    }
+    private void clearBathroomMarkers() {
+        for (Marker marker : bathroomMarkers) {
+            marker.remove();
+        }
+        bathroomMarkers.clear();
+    }
 
     public void bathroomCallback(Object result) {
         ArrayList<Bathroom> bathroomList = (ArrayList<Bathroom>)result;
@@ -190,10 +195,10 @@ public class MapsActivity extends AppCompatActivity implements
                 avgReview /= curr.getReviews().size();
                 String snippet = "";
                 for (int i = 0; i < (int)avgReview; i++) {
-                    snippet += "★ ";
+                    snippet += "\uD83D\uDEBD ";
                 }
                 for (int i = 0; i < (5 - (int)avgReview); i++) {
-                    snippet += "☆ ";
+                    snippet += "\uD83D\uDCA9 ";
                 }
                 //options.snippet("Avg Rating: " + (int)avgReview + " stars");
                 options.snippet(snippet);
@@ -201,8 +206,9 @@ public class MapsActivity extends AppCompatActivity implements
                 options.snippet("No Reviews");
             }
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-            //need to somehow get these markers into a list
-            mMap.addMarker(options);
+            Marker newMarker = mMap.addMarker(options);
+            newMarker.setTag(curr);
+            bathroomMarkers.add(newMarker);
         }
     }
 
@@ -224,7 +230,6 @@ public class MapsActivity extends AppCompatActivity implements
                     String name = data.getStringExtra("name");
                     LatLng location = new LatLng(data.getDoubleExtra("latitude", 0),
                             data.getDoubleExtra("longitude", 0));
-                    //TODO: create new bathroom with return data
                     getBathrooms();
                 } else {
                     //do nothing

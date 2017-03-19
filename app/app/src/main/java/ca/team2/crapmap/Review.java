@@ -1,10 +1,12 @@
 package ca.team2.crapmap;
 
+import java.io.Serializable;
+
 /**
  * Created by geoffreycaven on 2017-03-15.
  */
 
-public class Review {
+public class Review implements Serializable {
     private User user;
     private int stars;
     private String review;

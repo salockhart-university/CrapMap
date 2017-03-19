@@ -2,6 +2,7 @@ package ca.team2.crapmap;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,10 +10,10 @@ import java.util.Arrays;
  * Created by geoffreycaven on 2017-03-15.
  */
 
-public class Bathroom {
+public class Bathroom implements Serializable {
     private String id;
     private String name;
-    private LatLng location;
+    private transient LatLng location;
     //how to deal with images?
     //TODO deal with images
     private ArrayList<Review> reviews;
