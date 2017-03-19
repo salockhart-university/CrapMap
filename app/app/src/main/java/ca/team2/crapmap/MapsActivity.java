@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +43,8 @@ public class MapsActivity extends AppCompatActivity implements
     private LatLng currentLocation;
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
-    private Marker currentLocationMarker;
-    private List<Marker> bathroomMarkers = new ArrayList<Marker>();
+    private ClusterableBathroomMarker currentLocationMarker;
+    private ClusterManager<ClusterableBathroomMarker> clusterManager;
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
@@ -73,30 +74,6 @@ public class MapsActivity extends AppCompatActivity implements
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (googleApiClient != null) {
-//            googleApiClient.connect();
-//            getBathrooms();
-//        }
-//    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (googleApiClient != null) {
-//            googleApiClient.connect();
-//            getBathrooms();
-//        }
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        googleApiClient.disconnect();
-//        super.onStop();
-//    }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -105,6 +82,9 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        clusterManager = new ClusterManager<ClusterableBathroomMarker>(this,mMap);
+        mMap.setOnCameraIdleListener(clusterManager);
+        mMap.setOnMarkerClickListener(clusterManager);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -148,12 +128,10 @@ public class MapsActivity extends AppCompatActivity implements
         if (lastKnownLocation != null) {
             currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             mMap.clear();
+            clusterManager.clearItems();
             mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-            if (bathroomMarkers.isEmpty()) {
-                getBathrooms();
-            }
         }
 
         pollingLocationRequest = new LocationRequest();
@@ -180,14 +158,11 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onLocationChanged(Location newLocation) {
         mMap.clear();
-        if (currentLocationMarker != null) {
-            currentLocationMarker.remove();
-        }
         //need to compare locations, if too far apart, refresh bathrooms
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         getBathrooms();
     }
 
@@ -198,10 +173,7 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     private void clearBathroomMarkers() {
-        for (Marker marker : bathroomMarkers) {
-            marker.remove();
-        }
-        bathroomMarkers.clear();
+        clusterManager.clearItems();
     }
 
     public void bathroomCallback(Object result) {
@@ -216,13 +188,26 @@ public class MapsActivity extends AppCompatActivity implements
                     avgReview += review.getStars();
                 }
                 avgReview /= curr.getReviews().size();
-                options.snippet("Avg Rating: " + (int)avgReview + " stars");
+                String snippet = "";
+                for (int i = 0; i < (int)avgReview; i++) {
+                    snippet += "★ ";
+                }
+                for (int i = 0; i < (5 - (int)avgReview); i++) {
+                    snippet += "☆ ";
+                }
+                //options.snippet("Avg Rating: " + (int)avgReview + " stars");
+                options.snippet(snippet);
             } else {
                 options.snippet("No Reviews");
             }
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             //need to somehow get these markers into a list
-            mMap.addMarker(options);
+            clusterManager.addItem(new ClusterableBathroomMarker(
+                    options.getPosition().latitude,
+                    options.getPosition().longitude,
+                    options.getTitle(),
+                    options.getSnippet()
+            ));
         }
     }
 
