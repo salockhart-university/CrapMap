@@ -188,19 +188,30 @@ public class MapsActivity extends AppCompatActivity implements
             options.position(curr.getLocation());
             options.title(curr.getName());
             if (curr.getReviews().size() != 0) {
-                double avgReview = 0;
+                double avgCleanliness = 0;
+                double avgAccessibility = 0;
+                double avgAvailability = 0;
                 for (Review review : curr.getReviews()) {
-                    avgReview += review.getStars();
+                    avgCleanliness += review.getCleanliness();
+                    avgAccessibility += review.getAccessibility();
+                    avgAvailability += review.getAccessibility();
                 }
-                avgReview /= curr.getReviews().size();
-                String snippet = "";
-                for (int i = 0; i < (int)avgReview; i++) {
+                avgCleanliness /= curr.getReviews().size();
+                avgAccessibility /= curr.getReviews().size();
+                avgAvailability /= curr.getReviews().size();
+                String snippet = "Cleanliness: ";
+                for (int i = 0; i < (int)avgCleanliness; i++) {
                     snippet += "\uD83D\uDEBD ";
                 }
-                for (int i = 0; i < (5 - (int)avgReview); i++) {
-                    snippet += "\uD83D\uDCA9 ";
+                snippet += "\nAccessibility: ";
+                for (int i = 0; i < (int)avgAccessibility; i++) {
+                    snippet += "\uD83D\uDEBD ";
                 }
-                //options.snippet("Avg Rating: " + (int)avgReview + " stars");
+                snippet += "\nAvailability: ";
+                for (int i = 0; i < (int)avgAvailability; i++) {
+                    snippet += "\uD83D\uDEBD ";
+                }
+                Log.i("snippet", snippet);
                 options.snippet(snippet);
             } else {
                 options.snippet("No Reviews");

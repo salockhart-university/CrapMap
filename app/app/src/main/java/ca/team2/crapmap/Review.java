@@ -8,12 +8,17 @@ import java.io.Serializable;
 
 public class Review implements Serializable {
     private User user;
-    private int stars;
+    private int cleanliness;
+    private int accessibility;
+    private int availability;
+
     private String review;
 
-    public Review(int stars, String review) {
+    public Review(int cleanliness, int accessibility, int availability, String review) {
         this.user = null;
-        this.stars = stars;
+        this.cleanliness = cleanliness;
+        this.accessibility = accessibility;
+        this.availability = availability;
         this.review = review;
     }
 
@@ -25,13 +30,17 @@ public class Review implements Serializable {
         this.user = user;
     }
 
-    public int getStars() {
-        return stars;
-    }
+    public int getCleanliness() { return cleanliness; }
 
-    public void setStars(int stars) {
-        this.stars = stars;
-    }
+    public void setCleanliness(int cleanliness) { this.cleanliness = cleanliness; }
+
+    public int getAvailability() { return availability; }
+
+    public void setAvailability(int availability) { this.availability = availability; }
+
+    public int getAccessibility() { return accessibility; }
+
+    public void setAccessibility(int accessibility) { this.accessibility = accessibility; }
 
     public String getReview() {
         return review;
@@ -45,7 +54,9 @@ public class Review implements Serializable {
     public String toString() {
         return "Review{" +
                 "user=" + user +
-                ", stars=" + stars +
+                ", cleanliness=" + cleanliness +
+                ", accessibility=" + accessibility +
+                ", availability=" + availability +
                 ", review='" + review + '\'' +
                 '}';
     }

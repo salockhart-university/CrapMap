@@ -13,14 +13,16 @@ import java.util.Arrays;
 public class Bathroom implements Serializable {
     private String id;
     private String name;
+    private Boolean requiresPurchase;
     private transient LatLng location;
     //how to deal with images?
     //TODO deal with images
     private ArrayList<Review> reviews;
 
-    public Bathroom(String id, String name, String lat, String lng, ArrayList<Review> reviews) {
+    public Bathroom(String id, String name, Boolean requiresPurchase, String lat, String lng, ArrayList<Review> reviews) {
         this.id = id;
         this.name = name;
+        this.requiresPurchase = requiresPurchase;
         this.location = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         this.reviews = reviews;
     }
@@ -40,6 +42,10 @@ public class Bathroom implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Boolean getRequiresPurchase() { return requiresPurchase; }
+
+    public void setRequiresPurchase(Boolean requiresPurchase) { this.requiresPurchase = requiresPurchase; }
 
     public LatLng getLocation() {
         return location;
@@ -62,6 +68,7 @@ public class Bathroom implements Serializable {
         return "Bathroom{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", requiresPurchase" + requiresPurchase +
                 ", location=" + location +
                 ", reviews=" + reviews.toString() +
                 '}';

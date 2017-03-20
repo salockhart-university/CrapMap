@@ -91,9 +91,12 @@ public class RetrieveBathrooms extends AsyncTask {
 
                 for (int j = 0; j < reviewArr.length(); j++) {
                     JSONObject review = reviewArr.getJSONObject(j);
+                    JSONObject stars = review.getJSONObject("stars");
                     reviewList.add(
                             new Review(
-                                    review.getInt("stars"),
+                                    stars.getInt("cleanliness"),
+                                    stars.getInt("accessibility"),
+                                    stars.getInt("availability"),
                                     review.getString("review")
                             )
                     );
@@ -101,10 +104,11 @@ public class RetrieveBathrooms extends AsyncTask {
 
                 resultsList.add(
                         new Bathroom(
-                          curr.getString("_id"),
-                          curr.getString("name"),
-                          curr.getJSONObject("location").getString("lat"),
-                          curr.getJSONObject("location").getString("long"),
+                                curr.getString("_id"),
+                                curr.getString("name"),
+                                curr.getBoolean("requiresPurchase"),
+                                curr.getJSONObject("location").getString("lat"),
+                                curr.getJSONObject("location").getString("long"),
                           reviewList
                         )
                 );
