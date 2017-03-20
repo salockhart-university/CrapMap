@@ -241,6 +241,9 @@ public class MapsActivity extends AppCompatActivity implements
                     String name = data.getStringExtra("name");
                     LatLng location = new LatLng(data.getDoubleExtra("latitude", 0),
                             data.getDoubleExtra("longitude", 0));
+                    Boolean requiresPurchase = data.getBooleanExtra("requiresPurchase", false);
+
+
                     getBathrooms();
                 } else {
                     //do nothing

@@ -10,8 +10,13 @@
         android:id="@+id/new_bathroom_name"
         android:hint="Bathroom Name"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:id="@+id/new_bathroom_requires_purchase"
+        android:text="Requires Purchase"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/new_bathroom_name"/>
     <Button
         android:id="@+id/new_bathroom_submit"
         android:text="Submit"

@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class NewBathroomActivity extends AppCompatActivity {
-    private Button back, submit;
+    private Button submit;
     private EditText name;
+    private CheckBox requiresPurchase;
     private double latitude, longitude;
 
     @Override
@@ -22,6 +24,7 @@ public class NewBathroomActivity extends AppCompatActivity {
 
         submit = (Button)findViewById(R.id.new_bathroom_submit);
         name = (EditText)findViewById(R.id.new_bathroom_name);
+        requiresPurchase = (CheckBox)findViewById(R.id.new_bathroom_requires_purchase);
         latitude = getIntent().getDoubleExtra("latitude", 0);
         longitude = getIntent().getDoubleExtra("longitude", 0);
 
@@ -40,6 +43,7 @@ public class NewBathroomActivity extends AppCompatActivity {
         resultIntent.putExtra("name", name.toString());
         resultIntent.putExtra("latitude", latitude);
         resultIntent.putExtra("longitude", longitude);
+        resultIntent.putExtra("requiresPurchase", requiresPurchase.isEnabled());
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
