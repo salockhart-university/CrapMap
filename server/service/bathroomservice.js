@@ -37,6 +37,7 @@ module.exports = {
 		const bathroom = {
 			name: formData.name,
 			location: formData.location,
+			requiresPurchase: !!formData.requiresPurchase,
 			images: [],
 			reviews: []
 		};

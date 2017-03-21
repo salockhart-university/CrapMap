@@ -1,7 +1,6 @@
 package ca.team2.crapmap;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -26,9 +26,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
@@ -40,11 +43,14 @@ public class MapsActivity extends AppCompatActivity implements
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private Marker currentLocationMarker;
+    private ArrayList<Marker> bathroomMarkers;
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
     private static final int NEW_BATHROOM_CREATED = 101;
     private static final int NEW_COMMENT_CREATED = 102;
+
+    private static final String BASE_API_URL = "https://crap-map-server.herokuapp.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,20 +73,6 @@ public class MapsActivity extends AppCompatActivity implements
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (googleApiClient != null) {
-//            googleApiClient.connect();
-//        }
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        googleApiClient.disconnect();
-//        super.onStop();
-//    }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -89,6 +81,7 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        bathroomMarkers = new ArrayList<>();
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -103,11 +96,14 @@ public class MapsActivity extends AppCompatActivity implements
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
-                //will pass database ID or something
-                //could also pass full serialized content to reduce requests to server
-                intent.putExtra("bathroom_id","");
-                startActivity(intent);
+                if (marker.getId() != currentLocationMarker.getId()) {
+                    Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
+                    Bathroom bathroom = (Bathroom)marker.getTag();
+                    if (bathroom != null) {
+                        intent.putExtra("bathroom", bathroom);
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
@@ -132,14 +128,14 @@ public class MapsActivity extends AppCompatActivity implements
         if (lastKnownLocation != null) {
             currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+            currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
 
         pollingLocationRequest = new LocationRequest();
-        pollingLocationRequest.setInterval(5000);
-        pollingLocationRequest.setFastestInterval(3000);
+//        pollingLocationRequest.setInterval(1000000);
+//        pollingLocationRequest.setFastestInterval(100000);
         pollingLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -164,14 +160,73 @@ public class MapsActivity extends AppCompatActivity implements
         if (currentLocationMarker != null) {
             currentLocationMarker.remove();
         }
+        //need to compare locations, if too far apart, refresh bathrooms
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+        currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+        getBathrooms();
+    }
+
+    private void getBathrooms() {
+        Log.i("getBathrooms", "executing");
+        RetrieveBathrooms getTask = new RetrieveBathrooms(BASE_API_URL + "bathroom/?lat=" + currentLocation.latitude + "&long=" + currentLocation.longitude + "&radius=3000", RequestType.GET, this);
+        getTask.execute();
+    }
+
+    private void clearBathroomMarkers() {
+        for (Marker marker : bathroomMarkers) {
+            marker.remove();
+        }
+        bathroomMarkers.clear();
+    }
+
+    public void bathroomCallback(Object result) {
+        ArrayList<Bathroom> bathroomList = (ArrayList<Bathroom>)result;
+        for (Bathroom curr : bathroomList) {
+            MarkerOptions options = new MarkerOptions();
+            options.position(curr.getLocation());
+            options.title(curr.getName());
+            if (curr.getReviews().size() != 0) {
+                double avgCleanliness = 0;
+                double avgAccessibility = 0;
+                double avgAvailability = 0;
+                for (Review review : curr.getReviews()) {
+                    avgCleanliness += review.getCleanliness();
+                    avgAccessibility += review.getAccessibility();
+                    avgAvailability += review.getAccessibility();
+                }
+                avgCleanliness /= curr.getReviews().size();
+                avgAccessibility /= curr.getReviews().size();
+                avgAvailability /= curr.getReviews().size();
+                String snippet = "Cleanliness: ";
+                for (int i = 0; i < (int)avgCleanliness; i++) {
+                    snippet += "\uD83D\uDEBD ";
+                }
+                snippet += "\nAccessibility: ";
+                for (int i = 0; i < (int)avgAccessibility; i++) {
+                    snippet += "\uD83D\uDEBD ";
+                }
+                snippet += "\nAvailability: ";
+                for (int i = 0; i < (int)avgAvailability; i++) {
+                    snippet += "\uD83D\uDEBD ";
+                }
+                Log.i("snippet", snippet);
+                options.snippet(snippet);
+            } else {
+                options.snippet("No Reviews");
+            }
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            Marker newMarker = mMap.addMarker(options);
+            newMarker.setTag(curr);
+            bathroomMarkers.add(newMarker);
+        }
     }
 
     private void openNewBathroomActivity() {
         Intent intent = new Intent(this, NewBathroomActivity.class);
+        intent.putExtra("latitude", currentLocation.latitude);
+        intent.putExtra("longitude", currentLocation.longitude);
         startActivityForResult(intent, NEW_BATHROOM_CREATED);
     }
 
@@ -181,7 +236,15 @@ public class MapsActivity extends AppCompatActivity implements
         switch(requestCode) {
             case(NEW_BATHROOM_CREATED): {
                 if (resultCode == Activity.RESULT_OK) {
-                    //pull new data from server, refresh map
+                    mMap.clear();
+                    //TODO: get location again here too, or just make a new marker
+                    String name = data.getStringExtra("name");
+                    LatLng location = new LatLng(data.getDoubleExtra("latitude", 0),
+                            data.getDoubleExtra("longitude", 0));
+                    Boolean requiresPurchase = data.getBooleanExtra("requiresPurchase", false);
+
+
+                    getBathrooms();
                 } else {
                     //do nothing
                 }

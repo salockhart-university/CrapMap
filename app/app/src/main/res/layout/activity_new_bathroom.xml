@@ -4,17 +4,24 @@
     android:id="@+id/activity_new_bathroom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ca.team2.crapmap.NewBathroomActivity">
 
-    <TextView
-        android:text="bathroom creation form goes here"
+    <EditText
+        android:id="@+id/new_bathroom_name"
+        android:hint="Bathroom Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:id="@+id/new_bathroom_requires_purchase"
+        android:text="Requires Purchase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/new_bathroom_name"/>
+    <Button
+        android:id="@+id/new_bathroom_submit"
+        android:text="Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView2" />
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

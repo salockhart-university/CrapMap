@@ -5,4 +5,5 @@
     <string name="permission_confirmation">OK</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="new_bathroom_title">Create New Bathroom</string>
+    <string name="loading_map_message">Finding bathrooms near you...</string>
 </resources>

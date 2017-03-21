@@ -13,6 +13,7 @@
             "required": true
         }
     },
+    "requiresPurchase": "Boolean",
     "images": "[String]",
     "reviews": [
         {
@@ -20,8 +21,18 @@
                 "type": "String"
             },
             "stars": {
-                "type": "Number",
-                "required": true
+                "cleanliness": {
+                    "type": "Number",
+                    "required": true
+                },
+        		"accessibility": {
+                    "type": "Number",
+                    "required": true
+                },
+        		"availability": {
+                    "type": "Number",
+                    "required": true
+                }
             },
             "review": {
                 "type": "String"
