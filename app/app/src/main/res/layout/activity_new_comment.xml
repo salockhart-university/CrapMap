@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/ca.team2.crapmap"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -68,7 +68,7 @@
             android:layout_marginRight="40px"
             android:layout_marginTop="13dp"
             android:cropToPadding="false"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
+            android:srcCompat="@android:drawable/ic_menu_gallery" />
 
         <TextView
             android:id="@+id/textView7"
@@ -96,7 +96,7 @@
             android:layout_alignBottom="@+id/ivPhoto"
             android:layout_alignEnd="@+id/ivPhoto"
             android:layout_marginBottom="102dp"
-            app:srcCompat="@android:drawable/ic_menu_upload" />
+            android:srcCompat="@android:drawable/ic_menu_upload" />
 
         <ImageButton
             android:id="@+id/btBack"
@@ -106,7 +106,7 @@
             android:layout_below="@+id/seekBar3"
             android:layout_marginStart="21dp"
             android:layout_marginTop="24dp"
-            app:srcCompat="?attr/homeAsUpIndicator" />
+            android:srcCompat="?attr/homeAsUpIndicator" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabSave"
