@@ -1,8 +1,13 @@
 package ca.team2.crapmap;
 
-/**
- * Created by bmin on 2017-03-17.
- */
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-public class NewCommentActivity {
+public class NewCommentActivity extends AppCompatActivity {
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_comment);
+    }
+
 }

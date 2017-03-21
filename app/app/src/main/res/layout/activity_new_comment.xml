@@ -1,6 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btBack"
+            android:layout_marginLeft="40px"
+            android:layout_marginTop="17dp"
+            android:text="TextView"
+            tools:text="Your Rating:" />
+
+        <TextView
+            android:id="@+id/tvComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvRating"
+            android:layout_below="@+id/tvRating"
+            android:layout_marginTop="33dp"
+            android:text="TextView"
+            tools:text="Your Comment:" />
+
+        <SeekBar
+            android:id="@+id/sbRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvComment"
+            android:layout_marginRight="40px"
+            android:layout_toEndOf="@+id/tvComment" />
+
+        <EditText
+            android:id="@+id/tbComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/tvComment"
+            android:layout_below="@+id/tvComment"
+            android:layout_marginBottom="350px"
+            android:layout_marginRight="40px"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <TextView
+            android:id="@+id/tvImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tbComment"
+            android:layout_alignTop="@+id/tbComment"
+            android:layout_marginTop="122dp"
+            android:text="Upload an image:" />
+
+        <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/tvImage"
+            android:layout_below="@+id/tvImage"
+            android:layout_marginBottom="40px"
+            android:layout_marginRight="40px"
+            android:layout_marginTop="13dp"
+            android:cropToPadding="false"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:text="tvCurrentRating"
+            tools:text="Current Rating" />
+
+        <SeekBar
+            android:id="@+id/seekBar3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView7"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="350px"
+            android:layout_marginTop="16dp" />
+
+        <ImageButton
+            android:id="@+id/btUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ivPhoto"
+            android:layout_alignEnd="@+id/ivPhoto"
+            android:layout_marginBottom="102dp"
+            app:srcCompat="@android:drawable/ic_menu_upload" />
+
+        <ImageButton
+            android:id="@+id/btBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seekBar3"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="24dp"
+            app:srcCompat="?attr/homeAsUpIndicator" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="20px"
+            android:layout_marginRight="20px"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@android:drawable/ic_menu_save" />
+
+    </RelativeLayout>
 </LinearLayout>
