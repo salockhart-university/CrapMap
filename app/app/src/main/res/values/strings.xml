@@ -7,4 +7,16 @@
     <string name="new_bathroom_title">Create New Bathroom</string>
     <string name="loading_map_message">Finding bathrooms near you...</string>
     <string name="view_reviews">Tap to see more information</string>
+
+    <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_register">Register</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_login">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="error_duplicate_username">This username is already in use</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
 </resources>

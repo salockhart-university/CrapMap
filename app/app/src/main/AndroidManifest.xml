@@ -35,15 +35,18 @@
         <activity
             android:name=".NewBathroomActivity"
             android:label="@string/new_bathroom_title"
-            android:theme="@style/AppTheme"
-            android:parentActivityName="ca.team2.crapmap.MapsActivity">
-
-        </activity>
+            android:parentActivityName=".MapsActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".PreviewBathroomActivity"
-            android:parentActivityName="ca.team2.crapmap.MapsActivity">
-
-        </activity>
+            android:parentActivityName=".MapsActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
