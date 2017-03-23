@@ -7,6 +7,8 @@ const haversine = require('haversine');
 const bathroomService = require('../service/bathroomservice');
 const cloudinaryService = require('../service/cloudinaryservice');
 
+let validDays = ['sun', 'mon', 'tues', 'wed', 'thurs', 'fri', 'sun'];
+
 function pointIsWithinRadius(start, end, radius) {
 	const distance = haversine(start, end, {
 		unit: 'meter'
@@ -71,6 +73,18 @@ router.post('/', function(req, res) {
 
 	if (req.body.requiresPurchase == undefined) {
 		return res.status(400).send('Bad Request body requires boolean requiresPurchase');
+	}
+
+	if (req.body.hours) {
+		let error = req.body.hours.find(hour => {
+			let validDay = hour.day && typeof hour.day === 'string' && validDays.includes(hour.day);
+			let validOpen = hour.open && !isNaN(hour.open);
+			let validClose = hour.close && !isNaN(hour.close);
+			return !(validDay && validOpen && validClose);
+		});
+		if (error) {
+			return res.status(400).send('Bad Request hours items require string day, numbers open and close');
+		}
 	}
 
 	bathroomService.insertBathroom(req.body).then(function(result) {

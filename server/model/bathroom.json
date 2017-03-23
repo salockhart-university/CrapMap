@@ -4,7 +4,7 @@
         "required": true
     },
     "location": {
-        "lat":  {
+        "lat": {
             "type": "String",
             "required": true
         },
@@ -14,29 +14,42 @@
         }
     },
     "requiresPurchase": "Boolean",
-    "images": "[String]",
-    "reviews": [
-        {
-            "user": {
-                "type": "String"
-            },
-            "stars": {
-                "cleanliness": {
-                    "type": "Number",
-                    "required": true
-                },
-        		"accessibility": {
-                    "type": "Number",
-                    "required": true
-                },
-        		"availability": {
-                    "type": "Number",
-                    "required": true
-                }
-            },
-            "review": {
-                "type": "String"
-            }
+    "hours:": [{
+        "day": {
+            "type": "Enum",
+            "values": ["sun", "mon", "tues", "wed", "thurs", "fri", "sun"],
+            "required": true
+        },
+        "open": {
+            "type": "Number",
+            "required": true
+        },
+        "close": {
+            "type": "Number",
+            "required": true
         }
-    ]
+    }],
+    "images": "[String]",
+    "reviews": [{
+        "user": {
+            "type": "String"
+        },
+        "stars": {
+            "cleanliness": {
+                "type": "Number",
+                "required": true
+            },
+            "accessibility": {
+                "type": "Number",
+                "required": true
+            },
+            "availability": {
+                "type": "Number",
+                "required": true
+            }
+        },
+        "review": {
+            "type": "String"
+        }
+    }]
 }

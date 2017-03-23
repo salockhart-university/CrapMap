@@ -38,6 +38,7 @@ module.exports = {
 			name: formData.name,
 			location: formData.location,
 			requiresPurchase: !!formData.requiresPurchase,
+			hours: formData.hours || [],
 			images: [],
 			reviews: []
 		};
