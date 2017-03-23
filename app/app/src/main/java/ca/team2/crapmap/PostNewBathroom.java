@@ -53,10 +53,16 @@ public class PostNewBathroom extends AsyncTask {
             connection.setConnectTimeout(15000);
             connection.connect();
 
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", name);
-            jsonObject.put("location", new double[]{latitude, longitude});
-            jsonObject.put("requiresPurchase", requiresPurchase);
+            JSONObject body = new JSONObject();
+            JSONObject location = new JSONObject();
+            JSONObject[] times = new JSONObject[7];
+            //TODO: populate times
+            body.put("name", name);
+            location.put("lat", latitude);
+            location.put("long", longitude);
+            body.put("location", location);
+            body.put("requiresPurchase", requiresPurchase);
+            body.put("hours", times);
 
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(connection.getInputStream()));
