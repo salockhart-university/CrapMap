@@ -46,7 +46,8 @@ router.post('/login', function(req, res) {
 			const token = jwt.sign(payload, process.env.PASSPORT_SECRET);
 
 			res.status(200).send({
-				token: `JWT ${token}`
+				token: `JWT ${token}`,
+				name: doc.name
 			});
 		});
 	});
