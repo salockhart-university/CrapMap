@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
@@ -94,32 +95,7 @@ public class MapsActivity extends AppCompatActivity implements
             buildGoogleApiClient();
         }
 
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                View v = getLayoutInflater().inflate(R.layout.info_window_bathroom, null);
-                Bathroom curr = (Bathroom)marker.getTag();
-                if (curr == null) {
-                    return null;
-                }
-                TextView name_preview = (TextView)v.findViewById(R.id.bathroom_name_preview);
-                TextView ratings_preview = (TextView)v.findViewById(R.id.ratings_preview);
-                TextView req_purchase = (TextView)v.findViewById(R.id.requires_purchase_preview);
-                name_preview.setText(marker.getTitle());
-                ratings_preview.setText(marker.getSnippet());
-                if (curr.getRequiresPurchase()) {
-                    req_purchase.setText("Requires Purchase");
-                } else {
-                    req_purchase.setHeight(0);
-                }
-                return v;
-            }
-        });
+        mMap.setInfoWindowAdapter(buildInfoWindowAdapter());
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -348,5 +324,54 @@ public class MapsActivity extends AppCompatActivity implements
                 return;
             }
         }
+    }
+
+    private GoogleMap.InfoWindowAdapter buildInfoWindowAdapter() {
+        return new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = getLayoutInflater().inflate(R.layout.info_window_bathroom, null);
+                Bathroom curr = (Bathroom)marker.getTag();
+                if (curr == null) {
+                    return null;
+                }
+                TextView name_preview = (TextView)v.findViewById(R.id.bathroom_name_preview);
+                TextView ratings_preview = (TextView)v.findViewById(R.id.ratings_preview);
+                TextView hours_preview = (TextView)v.findViewById(R.id.open_status_preview);
+                TextView req_purchase = (TextView)v.findViewById(R.id.requires_purchase_preview);
+                name_preview.setText(marker.getTitle());
+                ratings_preview.setText(marker.getSnippet());
+                if (curr.getRequiresPurchase()) {
+                    req_purchase.setText("Requires Purchase");
+                } else {
+                    req_purchase.setHeight(0);
+                }
+
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+                Hours currHours = curr.getHours()[day];
+                if (currHours != null) {
+                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    int min = calendar.get(Calendar.MINUTE);
+                    double combo = hour + (min/100);
+                    if (currHours.getOpen() <= combo && currHours.getClose() >= combo) {
+                        hours_preview.setText("Open Now");
+                        hours_preview.setTextColor(getResources().getColor(R.color.colorGreen));
+                    } else {
+                        hours_preview.setText("Closed Now");
+                        hours_preview.setTextColor(getResources().getColor(R.color.colorRed));
+                    }
+                } else {
+                    hours_preview.setHeight(0);
+                }
+
+                return v;
+            }
+        };
     }
 }

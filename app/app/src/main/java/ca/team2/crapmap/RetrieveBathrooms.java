@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by geoffreycaven on 2017-03-15.
@@ -87,7 +88,9 @@ public class RetrieveBathrooms extends AsyncTask {
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject curr = jArr.getJSONObject(i);
                 JSONArray reviewArr = curr.getJSONArray("reviews");
+                JSONArray hoursArr = curr.getJSONArray("hours");
                 ArrayList<Review> reviewList = new ArrayList<Review>();
+                Hours[] hours = new Hours[7];
 
                 for (int j = 0; j < reviewArr.length(); j++) {
                     JSONObject review = reviewArr.getJSONObject(j);
@@ -102,6 +105,20 @@ public class RetrieveBathrooms extends AsyncTask {
                     );
                 }
 
+                for (int j = 0; j < hoursArr.length(); j++) {
+                    JSONObject hoursForDay = hoursArr.getJSONObject(j);
+                    String day = hoursForDay.getString("day");
+                    Hours hoursObj;
+                    try {
+                        double open = hoursForDay.getDouble("open");
+                        double close = hoursForDay.getDouble("close");
+                        hoursObj = new Hours(calendarEnumFromString(day), open/100, close/100);
+                    } catch (Exception e) {
+                        hoursObj = new Hours(calendarEnumFromString(day));
+                    }
+                    hours[j] = hoursObj;
+                }
+
                 resultsList.add(
                         new Bathroom(
                                 curr.getString("_id"),
@@ -109,7 +126,8 @@ public class RetrieveBathrooms extends AsyncTask {
                                 curr.getBoolean("requiresPurchase"),
                                 curr.getJSONObject("location").getString("lat"),
                                 curr.getJSONObject("location").getString("long"),
-                          reviewList
+                                reviewList,
+                                hours
                         )
                 );
             }
@@ -128,6 +146,27 @@ public class RetrieveBathrooms extends AsyncTask {
         super.onPostExecute(result);
         pDialog.dismiss();
         activity.bathroomCallback(result);
+    }
+
+    private int calendarEnumFromString(String day) {
+        switch (day) {
+            case "sun":
+                return Calendar.SUNDAY;
+            case "mon":
+                return Calendar.MONDAY;
+            case "tues":
+                return Calendar.TUESDAY;
+            case "wed":
+                return Calendar.WEDNESDAY;
+            case "thurs":
+                return Calendar.THURSDAY;
+            case "fri":
+                return Calendar.FRIDAY;
+            case "sat":
+                return Calendar.SATURDAY;
+            default:
+                throw new RuntimeException("Invalid day code provided: " + day);
+        }
     }
 
 }

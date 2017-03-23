@@ -18,13 +18,16 @@ public class Bathroom implements Serializable {
     //how to deal with images?
     //TODO deal with images
     private ArrayList<Review> reviews;
+    //TODO: deal with this screwing up serialization
+    private transient Hours[] hours = new Hours[7];
 
-    public Bathroom(String id, String name, Boolean requiresPurchase, String lat, String lng, ArrayList<Review> reviews) {
+    public Bathroom(String id, String name, Boolean requiresPurchase, String lat, String lng, ArrayList<Review> reviews, Hours[] hours) {
         this.id = id;
         this.name = name;
         this.requiresPurchase = requiresPurchase;
         this.location = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         this.reviews = reviews;
+        this.hours = hours;
     }
 
     public String getId() {
@@ -63,14 +66,24 @@ public class Bathroom implements Serializable {
         this.reviews = reviews;
     }
 
+    public Hours[] getHours() {
+        return hours;
+    }
+
+    public void setHours(Hours[] hours) {
+        this.hours = hours;
+    }
+
     @Override
     public String toString() {
         return "Bathroom{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", requiresPurchase" + requiresPurchase +
+                ", requiresPurchase=" + requiresPurchase +
                 ", location=" + location +
                 ", reviews=" + reviews.toString() +
+                //TODO: deal with this sometimes being null
+//                ", hours=" + hours.toString() +
                 '}';
     }
 }
