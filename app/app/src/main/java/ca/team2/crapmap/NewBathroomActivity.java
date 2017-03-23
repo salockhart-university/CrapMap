@@ -16,6 +16,7 @@ public class NewBathroomActivity extends AppCompatActivity {
     private EditText name;
     private CheckBox requiresPurchase;
     private double latitude, longitude;
+    private String baseApiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class NewBathroomActivity extends AppCompatActivity {
         requiresPurchase = (CheckBox)findViewById(R.id.new_bathroom_requires_purchase);
         latitude = getIntent().getDoubleExtra("latitude", 0);
         longitude = getIntent().getDoubleExtra("longitude", 0);
+        baseApiUrl = getIntent().getStringExtra("baseApiUrl");
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,10 +42,10 @@ public class NewBathroomActivity extends AppCompatActivity {
         //this should after a successful response from the server after submitting new bathroom
         //will let the map view know to refresh the markers from the server
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("name", name.toString());
-        resultIntent.putExtra("latitude", latitude);
-        resultIntent.putExtra("longitude", longitude);
-        resultIntent.putExtra("requiresPurchase", requiresPurchase.isEnabled());
+        PostNewBathroom postNewBathroom = new PostNewBathroom(baseApiUrl + "bathroom",
+            name.toString(), latitude, longitude, requiresPurchase.isChecked());
+        postNewBathroom.execute();
+        //TODO: send response back
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }

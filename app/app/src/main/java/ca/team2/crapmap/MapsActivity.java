@@ -231,6 +231,7 @@ public class MapsActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, NewBathroomActivity.class);
         intent.putExtra("latitude", currentLocation.latitude);
         intent.putExtra("longitude", currentLocation.longitude);
+        intent.putExtra("baseApiUrl", BASE_API_URL);
         startActivityForResult(intent, NEW_BATHROOM_CREATED);
     }
 
@@ -242,13 +243,6 @@ public class MapsActivity extends AppCompatActivity implements
                 if (resultCode == Activity.RESULT_OK) {
                     mMap.clear();
                     //TODO: get location again here too, or just make a new marker
-                    String name = data.getStringExtra("name");
-                    double latitude = data.getDoubleExtra("latitude", 0);
-                    double longitude = data.getDoubleExtra("longitude", 0);
-                    boolean requiresPurchase = data.getBooleanExtra("requiresPurchase", false);
-                    PostNewBathroom postNewBathroom =
-                        new PostNewBathroom(BASE_API_URL + "bathroom", name, latitude, longitude, requiresPurchase);
-
                     getBathrooms();
                 } else {
                     //do nothing
