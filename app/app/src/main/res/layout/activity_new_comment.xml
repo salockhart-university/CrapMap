@@ -68,7 +68,7 @@
             android:layout_marginRight="40px"
             android:layout_marginTop="13dp"
             android:cropToPadding="false"
-            android:srcCompat="@android:drawable/ic_menu_gallery" />
+            android:src="@android:drawable/ic_menu_gallery" />
 
         <TextView
             android:id="@+id/textView7"
@@ -96,7 +96,7 @@
             android:layout_alignBottom="@+id/ivPhoto"
             android:layout_alignEnd="@+id/ivPhoto"
             android:layout_marginBottom="102dp"
-            android:srcCompat="@android:drawable/ic_menu_upload" />
+            android:src="@android:drawable/ic_menu_upload" />
 
         <ImageButton
             android:id="@+id/btBack"
@@ -106,7 +106,7 @@
             android:layout_below="@+id/seekBar3"
             android:layout_marginStart="21dp"
             android:layout_marginTop="24dp"
-            android:srcCompat="?attr/homeAsUpIndicator" />
+            android:src="?attr/homeAsUpIndicator" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabSave"
@@ -118,7 +118,7 @@
             android:layout_marginRight="20px"
             android:clickable="true"
             app:fabSize="mini"
-            app:srcCompat="@android:drawable/ic_menu_save" />
+            app:src="@android:drawable/ic_menu_save" />
 
     </RelativeLayout>
 </LinearLayout>
