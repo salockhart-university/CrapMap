@@ -6,4 +6,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="new_bathroom_title">Create New Bathroom</string>
     <string name="loading_map_message">Finding bathrooms near you...</string>
+    <string name="view_reviews">Tap to see more information</string>
 </resources>

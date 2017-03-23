@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -92,6 +93,33 @@ public class MapsActivity extends AppCompatActivity implements
         } else {
             buildGoogleApiClient();
         }
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = getLayoutInflater().inflate(R.layout.info_window_bathroom, null);
+                Bathroom curr = (Bathroom)marker.getTag();
+                if (curr == null) {
+                    return null;
+                }
+                TextView name_preview = (TextView)v.findViewById(R.id.bathroom_name_preview);
+                TextView ratings_preview = (TextView)v.findViewById(R.id.ratings_preview);
+                TextView req_purchase = (TextView)v.findViewById(R.id.requires_purchase_preview);
+                name_preview.setText(marker.getTitle());
+                ratings_preview.setText(marker.getSnippet());
+                if (curr.getRequiresPurchase()) {
+                    req_purchase.setText("Requires Purchase");
+                } else {
+                    req_purchase.setHeight(0);
+                }
+                return v;
+            }
+        });
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
