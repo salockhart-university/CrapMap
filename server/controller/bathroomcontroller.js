@@ -9,7 +9,7 @@ const userService = require('../service/userservice');
 const bathroomService = require('../service/bathroomservice');
 const cloudinaryService = require('../service/cloudinaryservice');
 
-let validDays = ['sun', 'mon', 'tues', 'wed', 'thurs', 'fri', 'sun'];
+let validDays = ['sun', 'mon', 'tues', 'wed', 'thurs', 'fri', 'sat'];
 
 function pointIsWithinRadius(start, end, radius) {
 	const distance = haversine(start, end, {
