@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ca.team2.crapmap.NewBathroomActivity">
-
     <EditText
         android:id="@+id/new_bathroom_name"
         android:hint="Bathroom Name"
@@ -17,6 +16,141 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/new_bathroom_name"/>
+    <TextView
+        android:id="@+id/hours"
+        android:text="Hours of Operation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/new_bathroom_requires_purchase"
+        android:textColor="@color/colorBlack"
+        android:layout_marginTop="20dp"/>
+    <CheckBox
+        android:id="@+id/monday"
+        android:text="Monday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hours"/>
+    <Spinner
+        android:id="@+id/mondayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hours"
+        android:layout_marginLeft="150dp"></Spinner>
+    <Spinner
+        android:id="@+id/mondayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hours"
+        android:layout_marginLeft="250dp"></Spinner>
+    <CheckBox
+        android:id="@+id/tuesday"
+        android:text="Tuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/monday"/>
+    <Spinner
+        android:id="@+id/tuesdayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/monday"
+        android:layout_marginLeft="150dp"></Spinner>
+    <Spinner
+        android:id="@+id/tuesdayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/monday"
+        android:layout_marginLeft="250dp"></Spinner>
+    <CheckBox
+        android:id="@+id/wednesday"
+        android:text="Wednesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tuesday"/>
+    <Spinner
+        android:id="@+id/wednesdayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tuesday"
+        android:layout_marginLeft="150dp"></Spinner>
+    <Spinner
+        android:id="@+id/wednesdayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tuesday"
+        android:layout_marginLeft="250dp"></Spinner>
+    <CheckBox
+        android:id="@+id/thursday"
+        android:text="Thursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wednesday"/>
+    <Spinner
+        android:id="@+id/thursdayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wednesday"
+        android:layout_marginLeft="150dp"></Spinner>
+    <Spinner
+        android:id="@+id/thursdayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wednesday"
+        android:layout_marginLeft="250dp"></Spinner>
+    <CheckBox
+        android:id="@+id/friday"
+        android:text="Friday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thursday"/>
+    <Spinner
+        android:id="@+id/fridayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thursday"
+        android:layout_marginLeft="150dp"></Spinner>
+    <Spinner
+        android:id="@+id/fridayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thursday"
+        android:layout_marginLeft="250dp"></Spinner>
+    <CheckBox
+        android:id="@+id/saturday"
+        android:text="Saturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friday"/>
+    <Spinner
+        android:id="@+id/saturdayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friday"
+        android:layout_marginLeft="150dp"></Spinner>
+    <Spinner
+        android:id="@+id/saturdayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friday"
+        android:layout_marginLeft="250dp"></Spinner>
+    <CheckBox
+        android:id="@+id/sunday"
+        android:text="Sunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/saturday"/>
+    <Spinner
+        android:id="@+id/sundayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/saturday"
+        android:layout_marginLeft="150dp"></Spinner>
+    <Spinner
+        android:id="@+id/sundayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/saturday"
+        android:layout_marginLeft="250dp"></Spinner>
     <Button
         android:id="@+id/new_bathroom_submit"
         android:text="Submit"

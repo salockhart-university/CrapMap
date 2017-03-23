@@ -13,14 +13,16 @@ public class PostNewBathroom extends AsyncTask {
     private String stringUrl, name;
     private double latitude, longitude;
     private boolean requiresPurchase;
+    private Time[] times;
 
     public PostNewBathroom(String stringUrl, String name, double latitude, double longitude,
-        boolean requiresPurchase){
+        boolean requiresPurchase, Time[] times){
         this.stringUrl = stringUrl;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.requiresPurchase = requiresPurchase;
+        this.times = times;
     }
 
     public void setName(String name){
@@ -39,6 +41,10 @@ public class PostNewBathroom extends AsyncTask {
         this.requiresPurchase = requiresPurchase;
     }
 
+    public void setTimes(Time[] times){
+        this.times = times;
+    }
+
     @Override
     protected Object doInBackground(Object[] objects) {
         try{
@@ -55,14 +61,18 @@ public class PostNewBathroom extends AsyncTask {
 
             JSONObject body = new JSONObject();
             JSONObject location = new JSONObject();
-            JSONObject[] times = new JSONObject[7];
-            //TODO: populate times
+            JSONObject jsonTimes = new JSONObject();
+            for(int i=0; i<times.length; i++){
+                jsonTimes.put("day", times[i].day);
+                jsonTimes.put("open", times[i].open);
+                jsonTimes.put("close", times[i].close);
+            }
             body.put("name", name);
             location.put("lat", latitude);
             location.put("long", longitude);
             body.put("location", location);
             body.put("requiresPurchase", requiresPurchase);
-            body.put("hours", times);
+            body.put("hours", jsonTimes);
 
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(connection.getInputStream()));
