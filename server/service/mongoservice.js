@@ -1,9 +1,24 @@
 'use strict';
 
-// https://mongodb.github.io/node-mongodb-native/2.2/quick-start/
 const MongoClient = require('mongodb').MongoClient;
 
 const url = process.env.MONGO_URL;
+
+function ensureIndexes(db) {
+	Promise.all([
+		db.ensureIndex('user', { username: 1 }, { unique: true })
+	]).catch(function (err) {
+		console.error('error in creating indexes', err);
+	});
+}
+
+MongoClient.connect(url, function(err, db) {
+	if (err) {
+		console.fatal('fatal error in creating db object');
+		throw 'Error getting DB object';
+	}
+	ensureIndexes(db);
+});
 
 module.exports = {
 	connect: function () {

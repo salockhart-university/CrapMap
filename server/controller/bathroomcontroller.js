@@ -3,11 +3,13 @@
 const express = require('express');
 const router = express.Router();
 const haversine = require('haversine');
+const passport = require('passport');
 
+const userService = require('../service/userservice');
 const bathroomService = require('../service/bathroomservice');
 const cloudinaryService = require('../service/cloudinaryservice');
 
-let validDays = ['sun', 'mon', 'tues', 'wed', 'thurs', 'fri', 'sun'];
+let validDays = ['sun', 'mon', 'tues', 'wed', 'thurs', 'fri', 'sat'];
 
 function pointIsWithinRadius(start, end, radius) {
 	const distance = haversine(start, end, {
@@ -15,6 +17,13 @@ function pointIsWithinRadius(start, end, radius) {
 	});
 
 	return distance <= radius;
+}
+
+function optionalAuth(req, res, next) {
+	passport.authenticate('jwt', function(err, user) {
+		req.user = user;
+		next();
+	})(req, res, next);
 }
 
 router.get('/', function(req, res) {
@@ -100,7 +109,7 @@ router.delete('/:id', function(req, res) {
 	});
 });
 
-router.post('/:id/review', function(req, res) {
+router.post('/:id/review', optionalAuth, function(req, res) {
 	if (!req.body.stars) {
 		return res.status(400).send('Bad Request body requires stars object');
 	}
@@ -113,7 +122,22 @@ router.post('/:id/review', function(req, res) {
 	if (!req.body.stars.availability || !Number.isInteger(req.body.stars.availability)) {
 		return res.status(400).send('Bad Request stars object requires availability of type integer');
 	}
-	bathroomService.insertReview(req.params.id, req.body).then(function(result) {
+
+	let promise = Promise.resolve(req.body);
+
+	if (req.user) {
+		promise = userService.getByUsername(req.user.username).then(user => {
+			if (user) {
+				delete user.password;
+				req.body.user = user;
+			}
+			return req.body;
+		});
+	}
+
+	promise.then(body => {
+		return bathroomService.insertReview(req.params.id, body);
+	}).then(function(result) {
 		if (!result.lastErrorObject.updatedExisting) {
 			return res.status(400).send('Bad Request invalid id');
 		}
