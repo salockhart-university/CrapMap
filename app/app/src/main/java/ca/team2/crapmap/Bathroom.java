@@ -18,8 +18,7 @@ public class Bathroom implements Serializable {
     //how to deal with images?
     //TODO deal with images
     private ArrayList<Review> reviews;
-    //TODO: deal with this screwing up serialization
-    private transient Hours[] hours = new Hours[7];
+    private Hours[] hours = new Hours[7];
 
     public Bathroom(String id, String name, Boolean requiresPurchase, String lat, String lng, ArrayList<Review> reviews, Hours[] hours) {
         this.id = id;
@@ -82,8 +81,7 @@ public class Bathroom implements Serializable {
                 ", requiresPurchase=" + requiresPurchase +
                 ", location=" + location +
                 ", reviews=" + reviews.toString() +
-                //TODO: deal with this sometimes being null
-//                ", hours=" + hours.toString() +
+                ", hours=" + hours.toString() +
                 '}';
     }
 }

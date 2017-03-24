@@ -1,12 +1,13 @@
 package ca.team2.crapmap;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by geoffreycaven on 2017-03-23.
  */
 
-public class Hours {
+public class Hours implements Serializable {
     private int day_of_week;
     private double open;
     private double close;
