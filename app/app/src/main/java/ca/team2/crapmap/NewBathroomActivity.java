@@ -114,7 +114,7 @@ public class NewBathroomActivity extends AppCompatActivity {
         }
 
         PostNewBathroom postNewBathroom = new PostNewBathroom(baseApiUrl + "bathroom",
-                name.toString(), latitude, longitude, requiresPurchase.isChecked(),
+                name.getText().toString(), latitude, longitude, requiresPurchase.isChecked(),
                 arrayListTimes.toArray());
         String response = null;
         try{
