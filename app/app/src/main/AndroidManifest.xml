@@ -41,12 +41,19 @@
             android:name=".PreviewBathroomActivity"
             android:parentActivityName=".MapsActivity" />
         <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MapsActivity">
+        </activity>
+        <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:parentActivityName=".SettingsActivity"/>
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/title_activity_register" />
-        <activity android:name=".SettingsActivity"></activity>
+            android:label="@string/title_activity_register"
+            android:parentActivityName=".SettingsActivity"/>
+
     </application>
 
 </manifest>

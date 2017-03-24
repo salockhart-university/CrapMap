@@ -31,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -103,6 +104,7 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
         bathroomMarkers = new ArrayList<>();
         mMap.getUiSettings().setMapToolbarEnabled(false);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -154,7 +156,7 @@ public class MapsActivity extends AppCompatActivity implements
             mMap.clear();
             currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         }
 
         pollingLocationRequest = new LocationRequest();
@@ -188,7 +190,7 @@ public class MapsActivity extends AppCompatActivity implements
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
         currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         getBathrooms();
     }
 
