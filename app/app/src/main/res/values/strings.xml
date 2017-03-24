@@ -4,7 +4,8 @@
     <string name="permission_explanation_location">CrapMap uses your current location to suggest nearby bathrooms. We do not store this data.</string>
     <string name="permission_confirmation">OK</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="new_bathroom_title">Create New Bathroom</string>
+
+    <!-- Strings relating to the Map -->
     <string name="loading_map_message">Finding bathrooms near you...</string>
     <string name="view_reviews">Tap to see more information</string>
 
@@ -19,4 +20,21 @@
     <string name="error_duplicate_username">This username is already in use</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+
+    <!-- Strings related to creating bathrooms -->
+    <string name="new_bathroom_title">Create New Bathroom</string>
+    <string name="prompt_bathroom_name">Bathroom Name</string>
+    <string name="label_requires_purchase">Requires Purchase</string>
+    <string name="label_hours">Hours of Operation</string>
+    <string name="label_submit">Submit</string>
+
+    <!-- Strings for days of the week -->
+    <string name="label_sunday">Sunday</string>
+    <string name="label_monday">Monday</string>
+    <string name="label_tuesday">Tuesday</string>
+    <string name="label_wednesday">Wednesday</string>
+    <string name="label_thursday">Thursday</string>
+    <string name="label_friday">Friday</string>
+    <string name="label_saturday">Saturday</string>
+
 </resources>

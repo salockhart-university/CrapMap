@@ -4,21 +4,34 @@
     android:id="@+id/activity_new_bathroom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ca.team2.crapmap.NewBathroomActivity">
-    <EditText
-        android:id="@+id/new_bathroom_name"
-        android:hint="Bathroom Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/new_bathroom_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/new_bathroom_name"
+            android:hint="@string/prompt_bathroom_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:singleLine="true" />
+    </android.support.design.widget.TextInputLayout>
+
     <CheckBox
         android:id="@+id/new_bathroom_requires_purchase"
-        android:text="Requires Purchase"
+        android:text="@string/label_requires_purchase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/new_bathroom_name"/>
+        android:layout_below="@+id/new_bathroom_name_layout"/>
     <TextView
         android:id="@+id/hours"
-        android:text="Hours of Operation"
+        android:text="@string/label_hours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -27,7 +40,7 @@
         android:layout_marginTop="20dp"/>
     <CheckBox
         android:id="@+id/monday"
-        android:text="Monday"
+        android:text="@string/label_monday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/hours"/>
@@ -45,7 +58,7 @@
         android:layout_marginLeft="250dp"></Spinner>
     <CheckBox
         android:id="@+id/tuesday"
-        android:text="Tuesday"
+        android:text="@string/label_tuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/monday"/>
@@ -63,7 +76,7 @@
         android:layout_marginLeft="250dp"></Spinner>
     <CheckBox
         android:id="@+id/wednesday"
-        android:text="Wednesday"
+        android:text="@string/label_wednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tuesday"/>
@@ -81,7 +94,7 @@
         android:layout_marginLeft="250dp"></Spinner>
     <CheckBox
         android:id="@+id/thursday"
-        android:text="Thursday"
+        android:text="@string/label_thursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/wednesday"/>
@@ -99,7 +112,7 @@
         android:layout_marginLeft="250dp"></Spinner>
     <CheckBox
         android:id="@+id/friday"
-        android:text="Friday"
+        android:text="@string/label_friday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/thursday"/>
@@ -117,7 +130,7 @@
         android:layout_marginLeft="250dp"></Spinner>
     <CheckBox
         android:id="@+id/saturday"
-        android:text="Saturday"
+        android:text="@string/label_saturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/friday"/>
@@ -135,7 +148,7 @@
         android:layout_marginLeft="250dp"></Spinner>
     <CheckBox
         android:id="@+id/sunday"
-        android:text="Sunday"
+        android:text="@string/label_sunday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/saturday"/>
@@ -153,7 +166,7 @@
         android:layout_marginLeft="250dp"></Spinner>
     <Button
         android:id="@+id/new_bathroom_submit"
-        android:text="Submit"
+        android:text="@string/label_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
