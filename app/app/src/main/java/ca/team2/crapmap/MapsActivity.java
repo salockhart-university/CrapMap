@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
@@ -39,10 +43,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MapsActivity extends AppCompatActivity implements
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
+        OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        SensorEventListener
+{
 
     private LocationRequest pollingLocationRequest;
     private GoogleApiClient googleApiClient;
+    private SensorManager sensorManager;
 
     private LatLng currentLocation;
     private GoogleMap mMap;
@@ -76,6 +86,26 @@ public class MapsActivity extends AppCompatActivity implements
             checkLocationPermission();
         }
 
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // register this class as a listener for the orientation and
+        // accelerometer sensors
+        sensorManager.registerListener(
+                this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL
+                );
+    }
+
+    @Override
+    protected void onPause() {
+        // unregister listener
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 
     @Override
@@ -192,6 +222,35 @@ public class MapsActivity extends AppCompatActivity implements
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         getBathrooms();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            getAccelerometer(event);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        //do nothing
+    }
+
+    private void getAccelerometer(SensorEvent event) {
+        float[] values = event.values;
+        // Movement
+        float x = values[0];
+        float y = values[1];
+        float z = values[2];
+
+        float accelerationSquareRoot = (x * x + y * y + z * z)
+                / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+        if (accelerationSquareRoot >= 2) //
+        {
+            Toast.makeText(this, "Loading Recommendation", Toast.LENGTH_SHORT)
+                    .show();
+            //get closest bathroom
+        }
     }
 
     private void getBathrooms() {
