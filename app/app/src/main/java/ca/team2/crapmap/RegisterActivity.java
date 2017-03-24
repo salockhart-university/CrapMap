@@ -181,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
             try {
                 URL url = new URL(REGISTER_URL);
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-                connection.setRequestMethod("POST");
+                connection.setRequestMethod(RequestType.POST.getValue());
                 connection.setDoInput(true);
                 connection.setDoOutput(true);
                 connection.setUseCaches(false);

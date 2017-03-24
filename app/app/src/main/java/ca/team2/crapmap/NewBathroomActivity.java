@@ -100,18 +100,22 @@ public class NewBathroomActivity extends AppCompatActivity {
 
     public void createNewBathroom(){
         //TODO: check for invalid times
-        ArrayList<Time> arrayListTimes = new ArrayList<>();
+        ArrayList<Hours> arrayListTimes = new ArrayList<>();
         for(int i=0; i<7; i++){
             if(days[i].isChecked()){
-                arrayListTimes.add(new Time(days[i].getText().toString(),
-                    startTimes[i].getSelectedItem().toString(),
-                    endTimes[i].getSelectedItem().toString()));
+                double open = Double.parseDouble(startTimes[i].getSelectedItem().toString());
+                double close = Double.parseDouble(endTimes[i].getSelectedItem().toString());
+                arrayListTimes.add(new Hours(
+                        days[i].getText().toString(),
+                        open/100,
+                        close/100
+                ));
             }
         }
 
         PostNewBathroom postNewBathroom = new PostNewBathroom(baseApiUrl + "bathroom",
                 name.toString(), latitude, longitude, requiresPurchase.isChecked(),
-                (Time[])arrayListTimes.toArray());
+                arrayListTimes.toArray());
         String response = null;
         try{
             response = (String)postNewBathroom.execute().get();

@@ -13,16 +13,16 @@ public class PostNewBathroom extends AsyncTask {
     private String stringUrl, name;
     private double latitude, longitude;
     private boolean requiresPurchase;
-    private Time[] times;
+    private Object[] hours;
 
     public PostNewBathroom(String stringUrl, String name, double latitude, double longitude,
-        boolean requiresPurchase, Time[] times){
+        boolean requiresPurchase, Object[] hours){
         this.stringUrl = stringUrl;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.requiresPurchase = requiresPurchase;
-        this.times = times;
+        this.hours = hours;
     }
 
     public void setName(String name){
@@ -41,8 +41,8 @@ public class PostNewBathroom extends AsyncTask {
         this.requiresPurchase = requiresPurchase;
     }
 
-    public void setTimes(Time[] times){
-        this.times = times;
+    public void setHours(Hours[] hours){
+        this.hours = hours;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class PostNewBathroom extends AsyncTask {
         try{
             URL url = new URL(this.stringUrl);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod(RequestType.POST.getValue());
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setUseCaches(false);
@@ -62,10 +62,11 @@ public class PostNewBathroom extends AsyncTask {
             JSONObject body = new JSONObject();
             JSONObject location = new JSONObject();
             JSONObject jsonTimes = new JSONObject();
-            for(int i=0; i<times.length; i++){
-                jsonTimes.put("day", times[i].day);
-                jsonTimes.put("open", times[i].open);
-                jsonTimes.put("close", times[i].close);
+            for(int i=0; i<hours.length; i++){
+                Hours hoursObj = (Hours)hours[i];
+                jsonTimes.put("day", hoursObj.getforAPIDay_of_week());
+                jsonTimes.put("open", hoursObj.getOpen());
+                jsonTimes.put("close", hoursObj.getClose());
             }
             body.put("name", name);
             location.put("lat", latitude);

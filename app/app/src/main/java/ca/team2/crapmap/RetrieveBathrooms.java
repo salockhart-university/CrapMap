@@ -112,9 +112,9 @@ public class RetrieveBathrooms extends AsyncTask {
                     try {
                         double open = hoursForDay.getDouble("open");
                         double close = hoursForDay.getDouble("close");
-                        hoursObj = new Hours(calendarEnumFromString(day), open/100, close/100);
+                        hoursObj = new Hours(day, open/100, close/100);
                     } catch (Exception e) {
-                        hoursObj = new Hours(calendarEnumFromString(day));
+                        hoursObj = new Hours(day);
                     }
                     hours[j] = hoursObj;
                 }
@@ -148,25 +148,6 @@ public class RetrieveBathrooms extends AsyncTask {
         activity.bathroomCallback(result);
     }
 
-    private int calendarEnumFromString(String day) {
-        switch (day) {
-            case "sun":
-                return Calendar.SUNDAY;
-            case "mon":
-                return Calendar.MONDAY;
-            case "tues":
-                return Calendar.TUESDAY;
-            case "wed":
-                return Calendar.WEDNESDAY;
-            case "thurs":
-                return Calendar.THURSDAY;
-            case "fri":
-                return Calendar.FRIDAY;
-            case "sat":
-                return Calendar.SATURDAY;
-            default:
-                throw new RuntimeException("Invalid day code provided: " + day);
-        }
-    }
+
 
 }
