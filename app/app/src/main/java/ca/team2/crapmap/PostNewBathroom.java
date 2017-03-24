@@ -2,9 +2,12 @@ package ca.team2.crapmap;
 
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -50,7 +53,7 @@ public class PostNewBathroom extends AsyncTask {
         try{
             URL url = new URL(this.stringUrl);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod(RequestType.POST.getValue());
+            connection.setRequestMethod("POST");
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setUseCaches(false);
@@ -61,12 +64,14 @@ public class PostNewBathroom extends AsyncTask {
 
             JSONObject body = new JSONObject();
             JSONObject location = new JSONObject();
-            JSONObject jsonTimes = new JSONObject();
+            JSONArray jsonTimes = new JSONArray();
             for(int i=0; i<hours.length; i++){
+                JSONObject time = new JSONObject();
                 Hours hoursObj = (Hours)hours[i];
-                jsonTimes.put("day", hoursObj.getforAPIDay_of_week());
-                jsonTimes.put("open", hoursObj.getOpen());
-                jsonTimes.put("close", hoursObj.getClose());
+                time.put("day", hoursObj.getforAPIDay_of_week());
+                time.put("open", hoursObj.getOpen());
+                time.put("close", hoursObj.getClose());
+                jsonTimes.put(time);
             }
             body.put("name", name);
             location.put("lat", latitude);
@@ -75,16 +80,22 @@ public class PostNewBathroom extends AsyncTask {
             body.put("requiresPurchase", requiresPurchase);
             body.put("hours", jsonTimes);
 
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
-            String input;
-            StringBuffer response = new StringBuffer();
-            while((input = reader.readLine()) != null){
-                response.append(input);
-            }
-            reader.close();
+            DataOutputStream printout = new DataOutputStream(connection.getOutputStream());
+            printout.writeBytes(body.toString());
+            printout.flush();
+            printout.close();
 
-            return response;
+            InputStream is = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            is.close();
+            JSONObject json = new JSONObject(sb.toString());
+
+            return json.toString();
         }
         catch(Exception e){
             return null;
