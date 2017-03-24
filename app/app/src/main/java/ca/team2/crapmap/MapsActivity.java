@@ -149,19 +149,7 @@ public class MapsActivity extends AppCompatActivity implements
 
         mMap.setInfoWindowAdapter(buildInfoWindowAdapter());
 
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                if (marker.getId() != currentLocationMarker.getId()) {
-                    Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
-                    Bathroom bathroom = (Bathroom)marker.getTag();
-                    if (bathroom != null) {
-                        intent.putExtra("bathroom", bathroom);
-                        startActivity(intent);
-                    }
-                }
-            }
-        });
+        mMap.setOnInfoWindowClickListener(buildInfoWindowClickListener());
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -249,7 +237,10 @@ public class MapsActivity extends AppCompatActivity implements
         {
             Toast.makeText(this, "Loading Recommendation", Toast.LENGTH_SHORT)
                     .show();
-            //get closest bathroom
+            Marker closest = getClosestBathroomMarker();
+            if (closest != null) {
+                loadBathroomPreview(closest);
+            }
         }
     }
 
@@ -257,6 +248,31 @@ public class MapsActivity extends AppCompatActivity implements
         Log.i("getBathrooms", "executing");
         RetrieveBathrooms getTask = new RetrieveBathrooms(BASE_API_URL + "bathroom/?lat=" + currentLocation.latitude + "&long=" + currentLocation.longitude + "&radius=3000", RequestType.GET, this);
         getTask.execute();
+    }
+
+    private Marker getClosestBathroomMarker() {
+        if (currentLocation != null) {
+            float dist = Float.MAX_VALUE;
+            Marker closest = null;
+            for (Marker marker : bathroomMarkers) {
+                float[] results = new float[3];
+                Location.distanceBetween(
+                        currentLocation.latitude,
+                        currentLocation.longitude,
+                        marker.getPosition().latitude,
+                        marker.getPosition().longitude,
+                        results);
+                Log.i("result dist", marker.getTitle() + ": " + results[0]);
+                if (results[0] <= dist) {
+                    dist = results[0];
+                    closest = marker;
+                }
+            }
+            Log.i("closest", closest.getTitle());
+            return closest;
+        } else {
+            return null;
+        }
     }
 
     private void clearBathroomMarkers() {
@@ -448,5 +464,25 @@ public class MapsActivity extends AppCompatActivity implements
                 return v;
             }
         };
+    }
+
+    private GoogleMap.OnInfoWindowClickListener buildInfoWindowClickListener() {
+        return new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                loadBathroomPreview(marker);
+            }
+        };
+    }
+
+    private void loadBathroomPreview(Marker marker) {
+        if (marker.getId() != currentLocationMarker.getId()) {
+            Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
+            Bathroom bathroom = (Bathroom) marker.getTag();
+            if (bathroom != null) {
+                intent.putExtra("bathroom", bathroom);
+                startActivity(intent);
+            }
+        }
     }
 }
