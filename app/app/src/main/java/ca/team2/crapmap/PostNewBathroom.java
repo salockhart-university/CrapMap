@@ -16,10 +16,10 @@ public class PostNewBathroom extends AsyncTask {
     private String stringUrl, name;
     private double latitude, longitude;
     private boolean requiresPurchase;
-    private Object[] hours;
+    private String[] hours;
 
     public PostNewBathroom(String stringUrl, String name, double latitude, double longitude,
-        boolean requiresPurchase, Object[] hours){
+        boolean requiresPurchase, String[] hours){
         this.stringUrl = stringUrl;
         this.name = name;
         this.latitude = latitude;
@@ -44,7 +44,7 @@ public class PostNewBathroom extends AsyncTask {
         this.requiresPurchase = requiresPurchase;
     }
 
-    public void setHours(Hours[] hours){
+    public void setHours(String[] hours){
         this.hours = hours;
     }
 
@@ -67,10 +67,10 @@ public class PostNewBathroom extends AsyncTask {
             JSONArray jsonTimes = new JSONArray();
             for(int i=0; i<hours.length; i++){
                 JSONObject time = new JSONObject();
-                Hours hoursObj = (Hours)hours[i];
-                time.put("day", hoursObj.getforAPIDay_of_week());
-                time.put("open", hoursObj.getOpen());
-                time.put("close", hoursObj.getClose());
+                String[] hoursSplit = hours[i].split(" ");
+                time.put("day", hoursSplit[0]);
+                time.put("open", hoursSplit[1]);
+                time.put("close", hoursSplit[2]);
                 jsonTimes.put(time);
             }
             body.put("name", name);

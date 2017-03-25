@@ -2,6 +2,7 @@ package ca.team2.crapmap;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -162,22 +163,19 @@ public class NewBathroomActivity extends AppCompatActivity {
 
     public void createNewBathroom(){
         //TODO: check for invalid times
-        ArrayList<Hours> arrayListTimes = new ArrayList<>();
+        ArrayList<String> arrayListTimes = new ArrayList<>();
         for(int i=0; i<7; i++){
             if(days[i].isChecked()){
-                double open = Double.parseDouble(startTimes[i].getText().toString());
-                double close = Double.parseDouble(endTimes[i].getText().toString());
-                arrayListTimes.add(new Hours(
-                        days[i].getText().toString(),
-                        open/100,
-                        close/100
-                ));
+                arrayListTimes.add(days[i].getText().toString() + " "
+                    + startTimes[i].getText().toString() + " "
+                    + endTimes[i].getText().toString());
             }
         }
 
+        String[] times =  arrayListTimes.toArray(new String[arrayListTimes.size()]);
         PostNewBathroom postNewBathroom = new PostNewBathroom(baseApiUrl + "bathroom",
                 name.getText().toString(), latitude, longitude, requiresPurchase.isChecked(),
-                arrayListTimes.toArray());
+                times);
         String response = null;
         try{
             response = (String)postNewBathroom.execute().get();
