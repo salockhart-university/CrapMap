@@ -6,8 +6,10 @@
     <string name="title_activity_main">MainActivity</string>
 
     <!-- Strings relating to the Map -->
-    <string name="loading_map_message">Finding bathrooms near you...</string>
+    <string name="loading_map_message">Finding bathrooms near you…</string>
     <string name="view_reviews">Tap to see more information</string>
+    <string name="bathroom_open">Open Now</string>
+    <string name="bathroom_closed">Closed Now</string>
 
     <!-- Strings related to login -->
     <string name="title_activity_login">Sign in</string>

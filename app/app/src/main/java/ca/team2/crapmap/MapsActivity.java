@@ -438,25 +438,34 @@ public class MapsActivity extends AppCompatActivity implements
                 name_preview.setText(marker.getTitle());
                 ratings_preview.setText(marker.getSnippet());
                 if (curr.getRequiresPurchase()) {
-                    req_purchase.setText("Requires Purchase");
+                    req_purchase.setText(getResources().getString(R.string.label_requires_purchase));
                 } else {
                     req_purchase.setHeight(0);
                 }
 
                 Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
-                Hours currHours = curr.getHours()[day];
+                for (Hours hours : curr.getHours()) {
+                    Log.i("hours", " " + hours);
+                }
+                Hours currHours = curr.getHoursForDay(day);
+
                 if (currHours != null) {
+                    Log.i("currHours", currHours.toString());
                     int hour = calendar.get(Calendar.HOUR_OF_DAY);
                     int min = calendar.get(Calendar.MINUTE);
-                    double combo = hour + (min/100);
+                    double combo = hour + (min / 100);
+                    Log.i("combo", "" + combo);
                     if (currHours.getOpen() <= combo && currHours.getClose() >= combo) {
-                        hours_preview.setText("Open Now");
+                        hours_preview.setText(getResources().getString(R.string.bathroom_open));
                         hours_preview.setTextColor(getResources().getColor(R.color.colorGreen));
                     } else {
-                        hours_preview.setText("Closed Now");
+                        hours_preview.setText(getResources().getString(R.string.bathroom_closed));
                         hours_preview.setTextColor(getResources().getColor(R.color.colorRed));
                     }
+                } else if (curr.hasAnyHours()) {
+                    hours_preview.setText(getResources().getString(R.string.bathroom_closed));
+                    hours_preview.setTextColor(getResources().getColor(R.color.colorRed));
                 } else {
                     hours_preview.setHeight(0);
                 }

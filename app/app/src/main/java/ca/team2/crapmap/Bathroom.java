@@ -1,5 +1,7 @@
 package ca.team2.crapmap;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
@@ -71,6 +73,20 @@ public class Bathroom implements Serializable {
 
     public void setHours(Hours[] hours) {
         this.hours = hours;
+    }
+
+    public Boolean hasAnyHours() {
+        for (Hours dayHours : this.hours) {
+            if (dayHours != null) { return true; }
+        }
+        return false;
+    }
+
+    public Hours getHoursForDay(int day) {
+        for (Hours dayHours : this.hours) {
+            if (dayHours !=null && dayHours.getDay_of_week() == day) { return dayHours; }
+        }
+        return null;
     }
 
     @Override
