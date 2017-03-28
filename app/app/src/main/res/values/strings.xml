@@ -39,4 +39,12 @@
     <string name="label_friday">Friday</string>
     <string name="label_saturday">Saturday</string>
 
+    <!-- Strings for new comment -->
+    <string name="new_comment_title">Create New Comment</string>
+    <string name="label_cleanliness">Cleanliness:</string>
+    <string name="label_accessibility">Accessibility:</string>
+    <string name="label_availability">Availability:</string>
+    <string name="label_comment">Your Comment:</string>
+    <string name="label_comment_placeholder">Comment here</string>
+
 </resources>
