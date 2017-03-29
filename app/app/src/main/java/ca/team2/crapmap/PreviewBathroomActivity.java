@@ -7,6 +7,51 @@ import android.util.Log;
 
 public class PreviewBathroomActivity extends AppCompatActivity {
 
+    private float cleanliness, accessibility, availability;
+    private String comment;
+    String bathroomId;
+
+
+    public float getCleanliness() {
+
+        return cleanliness;
+    }
+
+    public void setCleanliness(float cleanliness) {
+
+        this.cleanliness = cleanliness;
+    }
+
+    public float getAccessibility() {
+
+        return accessibility;
+    }
+
+    public void setAccessibility(float accessibility) {
+
+        this.accessibility = accessibility;
+    }
+
+    public float getAvailability() {
+
+        return availability;
+    }
+
+    public void setAvailability(float availability) {
+
+        this.availability = availability;
+    }
+
+
+    public void setComment(String comment) {
+
+        this.comment = comment;
+    }
+
+    public String getComment(){
+        return comment;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,4 +61,11 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         Bathroom bathroom = (Bathroom)intent.getSerializableExtra("bathroom");
         Log.i("bundle", bathroom.toString());
     }
+
+    //Main method to handle the loading of comments/ratings
+    public void loadRatings(){
+
+    }
+
+
 }
