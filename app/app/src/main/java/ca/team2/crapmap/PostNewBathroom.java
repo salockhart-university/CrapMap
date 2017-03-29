@@ -101,8 +101,7 @@ public class PostNewBathroom extends AsyncTask {
             body.put("requiresPurchase", requiresPurchase);
             body.put("hours", jsonTimes);
 
-            return body.toString();
-            /*DataOutputStream printout = new DataOutputStream(connection.getOutputStream());
+            DataOutputStream printout = new DataOutputStream(connection.getOutputStream());
             printout.writeBytes(body.toString());
             printout.flush();
             printout.close();
@@ -117,7 +116,7 @@ public class PostNewBathroom extends AsyncTask {
             is.close();
             JSONObject json = new JSONObject(sb.toString());
 
-            return json.toString();*/
+            return json.toString();
         }
         catch(Exception e){
             return null;
