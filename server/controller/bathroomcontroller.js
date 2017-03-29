@@ -87,8 +87,8 @@ router.post('/', function(req, res) {
 	if (req.body.hours) {
 		let error = req.body.hours.find(hour => {
 			let validDay = hour.day && typeof hour.day === 'string' && validDays.includes(hour.day);
-			let validOpen = hour.open && !isNaN(hour.open);
-			let validClose = hour.close && !isNaN(hour.close);
+			let validOpen = hour.open && hour.open.length === 4;
+			let validClose = hour.close && hour.close.length === 4;
 			return !(validDay && validOpen && validClose);
 		});
 		if (error) {

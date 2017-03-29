@@ -17,7 +17,7 @@ const passportOpts = {
 	ignoreExpiration: true
 };
 
-passport.use(new JwtStrategy(passportOpts, function (jwt_payload, done) {
+passport.use(new JwtStrategy(passportOpts, function(jwt_payload, done) {
 	done(null, jwt_payload);
 }));
 
@@ -33,7 +33,51 @@ const userController = require('./controller/usercontroller');
 
 app.use(bodyParser.json());
 
-app.use(busboy({immediate: true}));
+app.use(busboy({
+	immediate: true
+}));
+
+app.use(function(req, res, next) {
+	const oldWrite = res.write;
+	const oldEnd = res.end;
+
+	var chunks = [];
+
+	res.write = function(chunk) {
+		chunks.push(chunk);
+
+		oldWrite.apply(res, arguments);
+	};
+
+	res.end = function(chunk) {
+		if (chunk)
+			chunks.push(chunk);
+
+		let body = Buffer.concat(chunks).toString('utf8');
+
+		if (body.startsWith('{') || body.startsWith('[')) {
+			body = JSON.parse(body);
+		}
+
+		oldEnd.apply(res, arguments);
+
+		console.log(JSON.stringify({
+			request: {
+				route: req.url,
+				method: req.method,
+				body: req.body,
+				params: req.params,
+				queries: req.query,
+			},
+			response: {
+				code: res.statusCode,
+				body
+			}
+		}, null, 5));
+	};
+
+	next();
+});
 
 app.use('/bathroom', bathroomController);
 app.use('/image', imageController);
