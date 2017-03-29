@@ -73,7 +73,7 @@ app.use(function(req, res, next) {
 				code: res.statusCode,
 				body
 			}
-		}, null, 5));
+		}));
 	};
 
 	next();
