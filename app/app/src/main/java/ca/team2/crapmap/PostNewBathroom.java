@@ -68,6 +68,27 @@ public class PostNewBathroom extends AsyncTask {
             for(int i=0; i<hours.length; i++){
                 JSONObject time = new JSONObject();
                 String[] hoursSplit = hours[i].split(" ");
+                if(hoursSplit[0].equals("Monday")){
+                    hoursSplit[0] = "mon";
+                }
+                else if(hoursSplit[0].equals("Tuesday")){
+                    hoursSplit[0] = "tues";
+                }
+                else if(hoursSplit[0].equals("Wednesday")){
+                    hoursSplit[0] = "wed";
+                }
+                else if(hoursSplit[0].equals("Thursday")){
+                    hoursSplit[0] = "thurs";
+                }
+                else if(hoursSplit[0].equals("Friday")){
+                    hoursSplit[0] = "fri";
+                }
+                else if(hoursSplit[0].equals("Saturday")){
+                    hoursSplit[0] = "sat";
+                }
+                else if(hoursSplit[0].equals("Sunday")){
+                    hoursSplit[0] = "sun";
+                }
                 time.put("day", hoursSplit[0]);
                 time.put("open", hoursSplit[1]);
                 time.put("close", hoursSplit[2]);
@@ -80,7 +101,8 @@ public class PostNewBathroom extends AsyncTask {
             body.put("requiresPurchase", requiresPurchase);
             body.put("hours", jsonTimes);
 
-            DataOutputStream printout = new DataOutputStream(connection.getOutputStream());
+            return body.toString();
+            /*DataOutputStream printout = new DataOutputStream(connection.getOutputStream());
             printout.writeBytes(body.toString());
             printout.flush();
             printout.close();
@@ -95,7 +117,7 @@ public class PostNewBathroom extends AsyncTask {
             is.close();
             JSONObject json = new JSONObject(sb.toString());
 
-            return json.toString();
+            return json.toString();*/
         }
         catch(Exception e){
             return null;
