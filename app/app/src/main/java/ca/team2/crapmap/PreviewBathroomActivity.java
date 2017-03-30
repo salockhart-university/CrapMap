@@ -82,5 +82,16 @@ public class PreviewBathroomActivity extends AppCompatActivity {
 
     }
 
+    public void loadNewCommentView(){
+        Intent intent = new Intent(PreviewBathroomActivity.this, NewCommentActivity.class);
+        if (bathroom != null) {
+            String bathroomID = bathroom.getId();
+            String url = getIntent().getStringExtra("baseApiUrl") + getIntent().getStringExtra("id") + "/review";
+            intent.putExtra("bathroomID", bathroomID);
+            intent.putExtra("reviewURL", url);
+            startActivity(intent);
+        }
+    }
+
 
 }
