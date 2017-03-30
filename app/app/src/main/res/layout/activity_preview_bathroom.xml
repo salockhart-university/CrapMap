@@ -116,11 +116,12 @@
             tools:layout_editor_absoluteY="16dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_newComment"
             style="@android:style/Widget.Material.Light.Button.Inset"
             android:layout_width="79dp"
             android:layout_height="65dp"
             android:elevation="7dp"
+            android:onClick="loadNewCommentView"
             android:text="+"
             android:textSize="30sp"
             android:visibility="visible"

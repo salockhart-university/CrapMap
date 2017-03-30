@@ -76,7 +76,7 @@ public class PreviewBathroomActivity extends AppCompatActivity {
     public void generateReviewModule(float cleanliness, float accessibility, float availability, String comment, String userName){
         //TODO finalize this method and send pre-made row module.
         ArrayList<Review> br = bathroom.getReviews();
-        ArrayAdapter<Review> arrayAdapter = new ArrayAdapter<Review>(this, android.R.layout.simple_list_item_1, br);
+        ArrayAdapter<Review> arrayAdapter = new ArrayAdapter<Review>(this, R.layout.review_row, br);
 
         review_listView.setAdapter(arrayAdapter);
 
@@ -86,7 +86,7 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         Intent intent = new Intent(PreviewBathroomActivity.this, NewCommentActivity.class);
         if (bathroom != null) {
             String bathroomID = bathroom.getId();
-            String url = getIntent().getStringExtra("baseApiUrl") + getIntent().getStringExtra("id") + "/review";
+            String url = ""; //getIntent().getStringExtra("baseApiUrl") + getIntent().getStringExtra("id") + "/review";
             intent.putExtra("bathroomID", bathroomID);
             intent.putExtra("reviewURL", url);
             startActivity(intent);
