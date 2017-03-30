@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class PreviewBathroomActivity extends AppCompatActivity {
 
@@ -44,7 +47,7 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         avgClean = 0;
         avgAccess = 0;
         avgAvail = 0;
-        
+
         for(int i = 0; i < reviewCount ; i++){
             Review tempReview = bathroom.getReviews().get(i);
             float cleanlinessT, accessibilityT, availabilityT;
@@ -71,7 +74,12 @@ public class PreviewBathroomActivity extends AppCompatActivity {
     }
 
     public void generateReviewModule(float cleanliness, float accessibility, float availability, String comment, String userName){
-        //TODO figure out how to place these
+        //TODO finalize this method and send pre-made row module.
+        ArrayList<Review> br = bathroom.getReviews();
+        ArrayAdapter<Review> arrayAdapter = new ArrayAdapter<Review>(this, android.R.layout.simple_list_item_1, br);
+
+        review_listView.setAdapter(arrayAdapter);
+
     }
 
 
