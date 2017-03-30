@@ -5,6 +5,8 @@
     <string name="permission_confirmation">OK</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="base_api_url">https://crap-map-server.herokuapp.com/</string>
+
     <!-- Strings relating to the Map -->
     <string name="loading_map_message">Finding bathrooms near you…</string>
     <string name="view_reviews">Tap to see more information</string>
