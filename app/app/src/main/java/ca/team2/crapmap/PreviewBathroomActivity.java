@@ -17,6 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.team2.crapmap.model.Bathroom;
+
 public class PreviewBathroomActivity extends AppCompatActivity {
 
     private float avgClean, avgAccess , avgAvail ;
