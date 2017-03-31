@@ -95,12 +95,15 @@ public class RetrieveBathrooms extends AsyncTask {
                 for (int j = 0; j < reviewArr.length(); j++) {
                     JSONObject review = reviewArr.getJSONObject(j);
                     JSONObject stars = review.getJSONObject("stars");
+                    JSONObject userObj = review.getJSONObject("user");
+                    User user = userObj != null ? new User(userObj) : null;
                     reviewList.add(
                             new Review(
                                     stars.getInt("cleanliness"),
                                     stars.getInt("accessibility"),
                                     stars.getInt("availability"),
-                                    review.getString("review")
+                                    review.getString("review"),
+                                    user
                             )
                     );
                 }
