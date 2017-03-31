@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -295,35 +296,7 @@ public class MapsActivity extends AppCompatActivity implements
             MarkerOptions options = new MarkerOptions();
             options.position(curr.getLocation());
             options.title(curr.getName());
-            if (curr.getReviews().size() != 0) {
-                double avgCleanliness = 0;
-                double avgAccessibility = 0;
-                double avgAvailability = 0;
-                for (Review review : curr.getReviews()) {
-                    avgCleanliness += review.getCleanliness();
-                    avgAccessibility += review.getAccessibility();
-                    avgAvailability += review.getAccessibility();
-                }
-                avgCleanliness /= curr.getReviews().size();
-                avgAccessibility /= curr.getReviews().size();
-                avgAvailability /= curr.getReviews().size();
-                String snippet = "Cleanliness: ";
-                for (int i = 0; i < (int)avgCleanliness; i++) {
-                    snippet += "\uD83D\uDEBD ";
-                }
-                snippet += "\nAccessibility: ";
-                for (int i = 0; i < (int)avgAccessibility; i++) {
-                    snippet += "\uD83D\uDEBD ";
-                }
-                snippet += "\nAvailability: ";
-                for (int i = 0; i < (int)avgAvailability; i++) {
-                    snippet += "\uD83D\uDEBD ";
-                }
-                Log.i("snippet", snippet);
-                options.snippet(snippet);
-            } else {
-                options.snippet("No Reviews");
-            }
+            //TODO: make grey if location is closed
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             Marker newMarker = mMap.addMarker(options);
             newMarker.setTag(curr);
@@ -439,11 +412,23 @@ public class MapsActivity extends AppCompatActivity implements
                     return null;
                 }
                 TextView name_preview = (TextView)v.findViewById(R.id.bathroom_name_preview);
-                TextView ratings_preview = (TextView)v.findViewById(R.id.ratings_preview);
+                RatingBar cleanliness_preview = (RatingBar)v.findViewById(R.id.cleanliness_preview);
+                RatingBar accessibility_preview = (RatingBar)v.findViewById(R.id.accessibility_preview);
+                RatingBar availability_preview = (RatingBar)v.findViewById(R.id.availability_preview);
+                TextView number_reviews = (TextView)v.findViewById(R.id.number_reviews);
                 TextView hours_preview = (TextView)v.findViewById(R.id.open_status_preview);
                 TextView req_purchase = (TextView)v.findViewById(R.id.requires_purchase_preview);
                 name_preview.setText(marker.getTitle());
-                ratings_preview.setText(marker.getSnippet());
+                if (curr.getReviews().size() == 0) {
+                    number_reviews.setText("No Reviews");
+                } else {
+                    String reviewNum = curr.getReviews().size() == 1 ? "1 Review" : curr.getReviews().size() + " Reviews";
+                    number_reviews.setText(reviewNum);
+                    float[] ratings = curr.getAvgRatings();
+                    cleanliness_preview.setRating(ratings[0]);
+                    accessibility_preview.setRating(ratings[1]);
+                    availability_preview.setRating(ratings[2]);
+                }
                 if (curr.getRequiresPurchase()) {
                     req_purchase.setText(getResources().getString(R.string.label_requires_purchase));
                 } else {

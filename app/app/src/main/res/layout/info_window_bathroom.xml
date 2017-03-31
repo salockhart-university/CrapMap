@@ -13,8 +13,86 @@
         android:textStyle="bold"
         android:layout_marginBottom="5dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Cleanliness:" />
+
+        <RatingBar
+            android:id="@+id/cleanliness_preview"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:numStars="5" />
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Accessibility:" />
+
+        <RatingBar
+            android:id="@+id/accessibility_preview"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:numStars="5" />
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Availability:" />
+
+        <RatingBar
+            android:id="@+id/availability_preview"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:numStars="5" />
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#FF4A4A4A" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
     <TextView
-        android:id="@+id/ratings_preview"
+        android:id="@+id/number_reviews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
