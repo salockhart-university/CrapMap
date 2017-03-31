@@ -43,7 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import ca.team2.crapmap.model.Bathroom;
+import ca.team2.crapmap.Bathroom;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
