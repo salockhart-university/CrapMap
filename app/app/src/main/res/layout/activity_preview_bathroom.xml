@@ -8,6 +8,17 @@
     android:layout_height="match_parent"
     tools:context="ca.team2.crapmap.PreviewBathroomActivity">
 
+    <TextView
+        android:id="@+id/text_bathroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingTop="20dp"
+        android:text="bathroom_name"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,7 +40,6 @@
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
             android:clickable="false"
             android:contextClickable="false"
             android:numStars="5"
@@ -51,7 +61,6 @@
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
             android:clickable="false"
             android:numStars="5"
             android:rating="3"
@@ -72,7 +81,6 @@
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
             android:clickable="false"
             android:contextClickable="false"
             android:longClickable="false"
@@ -96,7 +104,7 @@
             android:layout_height="19dp"
             android:layout_marginTop="25dp"
             android:text="Cleanliness::"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewStart"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@+id/text_availability"
             app:layout_constraintRight_toRightOf="@+id/text_availability"
@@ -111,7 +119,7 @@
             android:layout_height="19dp"
             android:layout_marginTop="25dp"
             android:text="Availability:"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewStart"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@+id/text_accessibility"
             app:layout_constraintRight_toRightOf="@+id/text_accessibility"
@@ -129,7 +137,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Accessibility:"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewStart"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/rating_average_accessibility"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -139,17 +147,6 @@
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintRight_creator="1"
             tools:layout_constraintTop_creator="1" />
-
-        <TextView
-            android:id="@+id/text_bathroom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="bathroom_name"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="126dp"
-            tools:layout_editor_absoluteY="16dp" />
 
 
         <TextView
@@ -166,7 +163,7 @@
 
         <ListView
             android:id="@+id/review_listView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="274dp"
             android:layout_marginTop="45dp"
             android:background="@color/common_google_signin_btn_text_light_default"
