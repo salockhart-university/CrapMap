@@ -3,6 +3,7 @@ package ca.team2.crapmap;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,14 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         avg_cleanliness = (RatingBar) findViewById(R.id.rating_average_cleanliness);
         bathroom_name = (TextView) findViewById(R.id.text_bathroom);
         review_listView = (ListView) findViewById(R.id.review_listView);
+        FloatingActionButton fab_newComment = (FloatingActionButton) findViewById(R.id.fab_newComment);
+        fab_newComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadNewCommentView();
+            }
+        });
+
         reviewList = bathroom.getReviews();
         loadReviews();//load initial data
         generateReviewModule();//generate listview contents

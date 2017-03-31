@@ -115,18 +115,17 @@
             tools:layout_editor_absoluteX="126dp"
             tools:layout_editor_absoluteY="16dp" />
 
-        <Button
-            android:id="@+id/btn_newComment"
-            style="@android:style/Widget.Material.Light.Button.Inset"
-            android:layout_width="79dp"
-            android:layout_height="65dp"
-            android:elevation="7dp"
-            android:onClick="loadNewCommentView"
-            android:text="+"
-            android:textSize="30sp"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="289dp"
-            tools:layout_editor_absoluteY="430dp" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_newComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_white_24dp"
+            app:backgroundTint="@color/common_google_signin_btn_text_light_default"
+            tools:layout_editor_absoluteY="430dp"
+            tools:layout_editor_absoluteX="303dp" />
 
         <ListView
             android:id="@+id/review_listView"
