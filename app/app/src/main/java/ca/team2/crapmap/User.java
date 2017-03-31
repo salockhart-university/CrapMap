@@ -3,11 +3,13 @@ package ca.team2.crapmap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by geoffreycaven on 2017-03-15.
  */
 
-public class User {
+public class User implements Serializable {
     String _id, name, username;
 
     public User(JSONObject user) throws JSONException {
