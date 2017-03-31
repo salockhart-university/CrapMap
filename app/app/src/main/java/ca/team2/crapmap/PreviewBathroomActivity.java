@@ -65,12 +65,11 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         for(int i = 0; i < reviewCount ; i++){
             Review tempReview = reviewList.get(i);
             float cleanlinessT, accessibilityT, availabilityT;
-            String commentT, userNameT;
+
             cleanlinessT = tempReview.getCleanliness();
             accessibilityT = tempReview.getAccessibility();
             availabilityT = tempReview.getAvailability();
-            commentT = tempReview.getReview();
-            userNameT = tempReview.getUser().toString();
+
             avgClean += cleanlinessT;
             avgAccess += accessibilityT;
             avgAvail += availabilityT;
@@ -119,11 +118,12 @@ public class PreviewBathroomActivity extends AppCompatActivity {
             RatingBar avail = (RatingBar) itemView.findViewById(R.id.rb_avail);
             RatingBar clean = (RatingBar) itemView.findViewById(R.id.rb_clean);
             TextView comment = (TextView) itemView.findViewById(R.id.text_comment);
-            if(currentReview.getUser().toString() == null){
+            user.setText("Anon");//TODO temp solution
+            /*if(currentReview.getUser().toString() == null){
                 user.setText("Anon");//If no name given, print anon
             }else {
                 user.setText(currentReview.getUser().toString());//TODO no username is stored
-            }
+            }*/
 
             access.setRating(currentReview.getAccessibility());
             avail.setRating(currentReview.getAvailability());
