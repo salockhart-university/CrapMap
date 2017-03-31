@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import ca.team2.crapmap.model.Bathroom;
+import ca.team2.crapmap.Bathroom;
 
 /**
  * Created by geoffreycaven on 2017-03-15.
