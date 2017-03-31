@@ -17,11 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.team2.crapmap.Bathroom;
-
 public class PreviewBathroomActivity extends AppCompatActivity {
 
-    private float avgClean, avgAccess , avgAvail ;
     public Bathroom bathroom;
     private List<Review> reviewList = new ArrayList<Review>();
 
@@ -52,40 +49,19 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         });
 
         reviewList = bathroom.getReviews();
-        loadReviews();//load initial data
+        loadBaseStats();//load initial data
         generateReviewModule();//generate listview contents
     }
 
 
     //Main method to handle the loading of comments/ratings
-    public void loadReviews(){
-        int reviewCount = reviewList.size();
-        avgClean = 0;
-        avgAccess = 0;
-        avgAvail = 0;
-
-        for(int i = 0; i < reviewCount ; i++){
-            Review tempReview = reviewList.get(i);
-            float cleanlinessT, accessibilityT, availabilityT;
-
-            cleanlinessT = tempReview.getCleanliness();
-            accessibilityT = tempReview.getAccessibility();
-            availabilityT = tempReview.getAvailability();
-
-            avgClean += cleanlinessT;
-            avgAccess += accessibilityT;
-            avgAvail += availabilityT;
-
-        }
-
-        avgClean /= reviewCount;
-        avgAccess /= reviewCount;
-        avgAvail /= reviewCount;
+    public void loadBaseStats(){
 
         bathroom_name.setText(bathroom.getName());
-        avg_cleanliness.setRating(avgClean);
-        avg_accessibility.setRating(avgAccess);
-        avg_availability.setRating(avgAvail);
+        avg_cleanliness.setRating(bathroom.getAvgRatings()[0]);
+        avg_availability.setRating(bathroom.getAvgRatings()[1]);
+        avg_accessibility.setRating(bathroom.getAvgRatings()[2]);
+
     }
 
     //sets adapter for listview, calls custom ReviewAdapter class
@@ -120,12 +96,12 @@ public class PreviewBathroomActivity extends AppCompatActivity {
             RatingBar avail = (RatingBar) itemView.findViewById(R.id.rb_avail);
             RatingBar clean = (RatingBar) itemView.findViewById(R.id.rb_clean);
             TextView comment = (TextView) itemView.findViewById(R.id.text_comment);
-            user.setText("Anon");//TODO temp solution
-            /*if(currentReview.getUser().toString() == null){
+            //user.setText("Anon");//TODO temp solution
+            if(currentReview.getUser().getUsername() == ""){
                 user.setText("Anon");//If no name given, print anon
             }else {
-                user.setText(currentReview.getUser().toString());//TODO no username is stored
-            }*/
+                user.setText(currentReview.getUser().getUsername());
+            }
 
             access.setRating(currentReview.getAccessibility());
             avail.setRating(currentReview.getAvailability());
