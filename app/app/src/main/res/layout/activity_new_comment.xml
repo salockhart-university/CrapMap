@@ -59,13 +59,14 @@
             android:layout_alignBottom="@+id/btSave"
             android:layout_below="@+id/rbAvailability" />
 
-        <ImageButton
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/btSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:src="@android:drawable/ic_menu_save" />
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_done_white_24dp" />
 
         <RatingBar
             android:id="@+id/rbAccessibility"

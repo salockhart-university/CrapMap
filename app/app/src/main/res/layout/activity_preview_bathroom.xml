@@ -132,9 +132,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp"
-        tools:layout_editor_absoluteY="430dp"
-        tools:layout_editor_absoluteX="303dp" />
+        android:src="@drawable/ic_add_white_24dp" />
 
 </RelativeLayout>
 
