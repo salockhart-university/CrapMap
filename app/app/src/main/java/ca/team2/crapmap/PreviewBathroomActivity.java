@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.team2.crapmap.model.Bathroom;
+import ca.team2.crapmap.Bathroom;
 
 public class PreviewBathroomActivity extends AppCompatActivity {
 
