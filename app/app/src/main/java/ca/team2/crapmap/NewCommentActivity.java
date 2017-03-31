@@ -18,6 +18,7 @@ public class NewCommentActivity extends AppCompatActivity {
     private EditText comment;
     private ImageButton save;
 
+    private String baseUrl;
     private String reviewUrl;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,8 @@ public class NewCommentActivity extends AppCompatActivity {
         comment = (EditText) findViewById(R.id.tbComment);
         save = (ImageButton) findViewById(R.id.btSave);
 
-        reviewUrl = getIntent().getStringExtra("baseApiUrl") + getIntent().getStringExtra("id") + "/review";
+        baseUrl = getString(R.string.base_api_url);
+        reviewUrl = baseUrl + getIntent().getStringExtra("bathroomID") + "/review";
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
