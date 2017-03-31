@@ -37,47 +37,47 @@ app.use(busboy({
 	immediate: true
 }));
 
-app.use(function(req, res, next) {
-	const oldWrite = res.write;
-	const oldEnd = res.end;
+// app.use(function(req, res, next) {
+// 	const oldWrite = res.write;
+// 	const oldEnd = res.end;
 
-	var chunks = [];
+// 	var chunks = [];
 
-	res.write = function(chunk) {
-		chunks.push(chunk);
+// 	res.write = function(chunk) {
+// 		chunks.push(chunk);
 
-		oldWrite.apply(res, arguments);
-	};
+// 		oldWrite.apply(res, arguments);
+// 	};
 
-	res.end = function(chunk) {
-		if (chunk)
-			chunks.push(chunk);
+// 	res.end = function(chunk) {
+// 		if (chunk)
+// 			chunks.push(chunk);
 
-		let body = Buffer.concat(chunks).toString('utf8');
+// 		let body = Buffer.concat(chunks).toString('utf8');
 
-		if (body.startsWith('{') || body.startsWith('[')) {
-			body = JSON.parse(body);
-		}
+// 		if (body.startsWith('{') || body.startsWith('[')) {
+// 			body = JSON.parse(body);
+// 		}
 
-		oldEnd.apply(res, arguments);
+// 		oldEnd.apply(res, arguments);
 
-		console.log(JSON.stringify({
-			request: {
-				route: req.url,
-				method: req.method,
-				body: req.body,
-				params: req.params,
-				queries: req.query,
-			},
-			response: {
-				code: res.statusCode,
-				body
-			}
-		}));
-	};
+// 		console.log(JSON.stringify({
+// 			request: {
+// 				route: req.url,
+// 				method: req.method,
+// 				body: req.body,
+// 				params: req.params,
+// 				queries: req.query,
+// 			},
+// 			response: {
+// 				code: res.statusCode,
+// 				body
+// 			}
+// 		}));
+// 	};
 
-	next();
-});
+// 	next();
+// });
 
 app.use('/bathroom', bathroomController);
 app.use('/image', imageController);
