@@ -283,6 +283,11 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     public void bathroomCallback(Object result) {
+        if (result == null) {
+            Toast.makeText(this, "Cannot retrieve data, please try again later", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
         ArrayList<Bathroom> bathroomList = (ArrayList<Bathroom>)result;
         for (Bathroom curr : bathroomList) {
             MarkerOptions options = new MarkerOptions();
