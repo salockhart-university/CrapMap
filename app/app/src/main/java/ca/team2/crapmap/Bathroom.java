@@ -89,6 +89,21 @@ public class Bathroom implements Serializable {
         return null;
     }
 
+    public float[] getAvgRatings() {
+        int clean = 0, avail = 0, access = 0;
+        for (Review curr : reviews) {
+            clean += curr.getCleanliness();
+            avail += curr.getAvailability();
+            access += curr.getAccessibility();
+        }
+        clean /= reviews.size();
+        avail /= reviews.size();
+        access /= reviews.size();
+        float[] ret = {clean, avail, access};
+        return ret;
+    }
+
+
     @Override
     public String toString() {
         return "Bathroom{" +

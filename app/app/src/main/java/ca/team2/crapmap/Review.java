@@ -14,8 +14,8 @@ public class Review implements Serializable {
 
     private String review;
 
-    public Review(int cleanliness, int accessibility, int availability, String review) {
-        this.user = null;
+    public Review(int cleanliness, int accessibility, int availability, String review, User user) {
+        this.user = user;
         this.cleanliness = cleanliness;
         this.accessibility = accessibility;
         this.availability = availability;

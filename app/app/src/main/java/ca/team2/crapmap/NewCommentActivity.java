@@ -2,6 +2,7 @@ package ca.team2.crapmap;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,7 +49,10 @@ public class NewCommentActivity extends AppCompatActivity {
         float access = accessibility.getRating();
         String commentString = comment.getText().toString();
 
-        PostNewComment postNewComment = new PostNewComment(reviewUrl, clean, avail, access, commentString);
+        SharedPreferences settings = getSharedPreferences("LOGIN_TOKEN", 0);
+        String userToken = settings.getString("token", null);
+
+        PostNewComment postNewComment = new PostNewComment(reviewUrl, clean, avail, access, commentString, userToken);
         String response = null;
         try{
             response = (String) postNewComment.execute().get();
