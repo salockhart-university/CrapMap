@@ -1,5 +1,6 @@
 package ca.team2.crapmap;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -15,15 +16,16 @@ import java.net.URL;
 public class PostNewComment extends AsyncTask {
     private float cleanliness, accessibility, availability;
     private String comment, stringUrl;
-    String bathroomId;
+    String bathroomId, userToken;
 
     //TODO: add user and bathroom parameters
-    public PostNewComment(String stringUrl, float cleanliness, float accessibility, float availability, String comment) {
+    public PostNewComment(String stringUrl, float cleanliness, float accessibility, float availability, String comment, String userToken) {
         this.stringUrl = stringUrl;
         this.cleanliness = cleanliness;
         this.accessibility = accessibility;
         this.availability = availability;
         this.comment = comment;
+        this.userToken = userToken;
     }
 
     public float getCleanliness() {
@@ -68,7 +70,6 @@ public class PostNewComment extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        //TODO: add a user and check for bathroom
         try{
             URL url = new URL(this.stringUrl);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -77,6 +78,9 @@ public class PostNewComment extends AsyncTask {
             connection.setDoOutput(true);
             connection.setUseCaches(false);
             connection.setRequestProperty("Content-Type", "application/json");
+            if (this.userToken != null) {
+                connection.addRequestProperty("Authorization", userToken);
+            }
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
             connection.connect();
