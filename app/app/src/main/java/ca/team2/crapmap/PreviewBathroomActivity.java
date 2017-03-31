@@ -97,10 +97,12 @@ public class PreviewBathroomActivity extends AppCompatActivity {
             RatingBar clean = (RatingBar) itemView.findViewById(R.id.rb_clean);
             TextView comment = (TextView) itemView.findViewById(R.id.text_comment);
             //user.setText("Anon");//TODO temp solution
-            if(currentReview.getUser().getUsername() == ""){
-                user.setText("Anon");//If no name given, print anon
-            }else {
-                user.setText(currentReview.getUser().getUsername());
+            if(currentReview.getUser() != null) {
+                if (currentReview.getUser().getUsername() == "") {
+                    user.setText("Anon");//If no name given, print anon
+                } else {
+                    user.setText(currentReview.getUser().getUsername());
+                }
             }
 
             access.setRating(currentReview.getAccessibility());
