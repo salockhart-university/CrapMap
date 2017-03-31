@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.Manifest;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,13 +61,16 @@ public class MapsActivity extends AppCompatActivity implements
     private LatLng currentLocation;
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
-    private Marker currentLocationMarker;
     private ArrayList<Marker> bathroomMarkers;
+    private long previousShakeTimestamp;
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
     private static final int NEW_BATHROOM_CREATED = 101;
     private static final int NEW_COMMENT_CREATED = 102;
+
+    private static final double SHAKE_THRESHOLD = 2.75;
+    private static final int SHAKE_BUFFER = 500;
 
     private static final String BASE_API_URL = "https://crap-map-server.herokuapp.com/";
 
@@ -137,6 +141,7 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
         bathroomMarkers = new ArrayList<>();
         mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -175,7 +180,6 @@ public class MapsActivity extends AppCompatActivity implements
         if (lastKnownLocation != null) {
             currentLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             mMap.clear();
-            currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         }
@@ -204,14 +208,8 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onLocationChanged(Location newLocation) {
         mMap.clear();
-        if (currentLocationMarker != null) {
-            currentLocationMarker.remove();
-        }
-        //need to compare locations, if too far apart, refresh bathrooms
+        //TODO: need to compare locations, if too far apart, refresh bathrooms
         currentLocation = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
-        currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         getBathrooms();
     }
 
@@ -228,16 +226,25 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     private void getAccelerometer(SensorEvent event) {
-        float[] values = event.values;
-        // Movement
-        float x = values[0];
-        float y = values[1];
-        float z = values[2];
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
 
-        float accelerationSquareRoot = (x * x + y * y + z * z)
-                / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-        if (accelerationSquareRoot >= 2) //
-        {
+        float gX = x / SensorManager.GRAVITY_EARTH;
+        float gY = y / SensorManager.GRAVITY_EARTH;
+        float gZ = z / SensorManager.GRAVITY_EARTH;
+
+        //gForce will be ~1 when phone is still
+        double gForce = Math.sqrt(gX * gX + gY * gY + gZ * gZ);
+
+        if (gForce > SHAKE_THRESHOLD) {
+            final long now = System.currentTimeMillis();
+
+            // Ignore shake events that are too close together
+            if (previousShakeTimestamp + SHAKE_BUFFER > now) {
+                return;
+            }
+
             Toast.makeText(this, "Loading Recommendation", Toast.LENGTH_SHORT)
                     .show();
             Marker closest = getClosestBathroomMarker();
@@ -477,13 +484,11 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     private void loadBathroomPreview(Marker marker) {
-        if (marker.getId() != currentLocationMarker.getId()) {
-            Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
-            Bathroom bathroom = (Bathroom) marker.getTag();
-            if (bathroom != null) {
-                intent.putExtra("bathroom", bathroom);
-                startActivity(intent);
-            }
+        Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
+        Bathroom bathroom = (Bathroom) marker.getTag();
+        if (bathroom != null) {
+            intent.putExtra("bathroom", bathroom);
+            startActivity(intent);
         }
     }
 }
