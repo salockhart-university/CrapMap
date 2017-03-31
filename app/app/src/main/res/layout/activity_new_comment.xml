@@ -23,9 +23,11 @@
             android:id="@+id/rbCleanliness"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="3"
+            android:numStars="5"
+            android:stepSize="1"
             android:rating="0"
-            android:layout_toStartOf="@+id/btSave" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/tvAccessibility"
@@ -45,28 +47,17 @@
             android:layout_marginTop="40dp"
             android:text="@string/label_availability" />
 
-        <TextView
-            android:id="@+id/tvComment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tvCleanliness"
-            android:layout_below="@+id/tvAvailability"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="40dp"
-            android:text="@string/label_comment" />
-
         <EditText
             android:id="@+id/tbComment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignStart="@+id/tvComment"
-            android:layout_below="@+id/tvComment"
-            android:layout_marginTop="15dp"
             android:layout_toStartOf="@+id/btSave"
             android:ems="10"
             android:inputType="textMultiLine"
-            android:text="@string/label_comment_placeholder"
-            android:layout_alignBottom="@+id/btSave" />
+            android:hint="@string/label_comment"
+            android:text=""
+            android:layout_alignBottom="@+id/btSave"
+            android:layout_below="@+id/rbAvailability" />
 
         <ImageButton
             android:id="@+id/btSave"
@@ -82,7 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/rbCleanliness"
             android:layout_below="@+id/rbCleanliness"
-            android:numStars="3" />
+            android:numStars="5"
+            android:stepSize="1" />
 
         <RatingBar
             android:id="@+id/rbAvailability"
@@ -90,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/rbAccessibility"
             android:layout_below="@+id/rbAccessibility"
-            android:numStars="3" />
+            android:numStars="5"
+            android:stepSize="1" />
 
 </RelativeLayout>
