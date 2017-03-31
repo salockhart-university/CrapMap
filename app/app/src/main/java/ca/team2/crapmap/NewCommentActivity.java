@@ -32,7 +32,7 @@ public class NewCommentActivity extends AppCompatActivity {
         save = (ImageButton) findViewById(R.id.btSave);
 
         baseUrl = getString(R.string.base_api_url);
-        reviewUrl = baseUrl + getIntent().getStringExtra("bathroomID") + "/review";
+        reviewUrl = baseUrl + "bathroom/" + getIntent().getStringExtra("bathroomID") + "/review";
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
