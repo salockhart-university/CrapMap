@@ -26,9 +26,7 @@ public class NewBathroomActivity extends AppCompatActivity {
     private CheckBox[] days;
     private TextView[] startTimes;
     private TextView[] endTimes;
-    private Button submit;
     private double latitude, longitude;
-    private String baseApiUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class NewBathroomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_bathroom);
         name = (EditText)findViewById(R.id.new_bathroom_name);
         requiresPurchase = (CheckBox)findViewById(R.id.new_bathroom_requires_purchase);
-        submit = (Button)findViewById(R.id.new_bathroom_submit);
+        Button submit = (Button) findViewById(R.id.new_bathroom_submit);
 
         days = new CheckBox[7];
         startTimes = new TextView[7];
@@ -156,7 +154,6 @@ public class NewBathroomActivity extends AppCompatActivity {
 
         latitude = getIntent().getDoubleExtra("latitude", 0);
         longitude = getIntent().getDoubleExtra("longitude", 0);
-        baseApiUrl = getIntent().getStringExtra("baseApiUrl");
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

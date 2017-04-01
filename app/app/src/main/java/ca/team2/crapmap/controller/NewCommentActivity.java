@@ -20,10 +20,7 @@ public class NewCommentActivity extends AppCompatActivity {
     private RatingBar accessibility;
     private RatingBar availability;
     private EditText comment;
-    private ImageButton save;
 
-    private String baseUrl;
-    private String reviewUrl;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +30,8 @@ public class NewCommentActivity extends AppCompatActivity {
         accessibility = (RatingBar) findViewById(R.id.rbAccessibility);
         availability = (RatingBar) findViewById(R.id.rbAvailability);
         comment = (EditText) findViewById(R.id.tbComment);
-        save = (ImageButton) findViewById(R.id.btSave);
 
-        baseUrl = getString(R.string.base_api_url);
-        reviewUrl = baseUrl + "bathroom/" + getIntent().getStringExtra("bathroomID") + "/review";
-
+        ImageButton save = (ImageButton) findViewById(R.id.btSave);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
