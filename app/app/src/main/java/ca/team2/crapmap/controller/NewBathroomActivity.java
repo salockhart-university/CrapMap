@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -166,18 +167,35 @@ public class NewBathroomActivity extends AppCompatActivity {
     }
 
     public void createNewBathroom(){
-        //TODO: check for invalid times
+        String nameString = name.getText().toString();
+        if(nameString.equals("") || nameString == null){
+            Toast.makeText(getApplicationContext(), "Invalid Name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ArrayList<String> arrayListTimes = new ArrayList<>();
-        for(int i=0; i<7; i++){
+        for(int i=0; i<days.length; i++){
             if(days[i].isChecked()){
-                arrayListTimes.add(days[i].getText().toString() + " "
-                    + startTimes[i].getText().toString() + " "
-                    + endTimes[i].getText().toString());
+                String day = days[i].getText().toString();
+                String start = startTimes[i].getText().toString();
+                String end = endTimes[i].getText().toString();
+                if(start.equals("") || start == null || end.equals("") || end == null ||
+                    Integer.parseInt(start) > Integer.parseInt(end)){
+                    Toast.makeText(getApplicationContext(),
+                        "Invalid Times", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                arrayListTimes.add(day + " " + start + " " + end);
             }
         }
 
         String[] times =  arrayListTimes.toArray(new String[arrayListTimes.size()]);
-        BathroomService.addBathroom(name.getText().toString(), latitude, longitude, requiresPurchase.isChecked(), times, new RequestHandler() {
+        if(times.length == 0){
+            Toast.makeText(getApplicationContext(),
+                    "Invalid Times", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        BathroomService.addBathroom(nameString, latitude, longitude, requiresPurchase.isChecked(), times, new RequestHandler() {
             @Override
             public void callback(Object result) {
                 String response = (String) result;
