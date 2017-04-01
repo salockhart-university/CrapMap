@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.model;
 
 import java.io.Serializable;
 import java.util.Calendar;

@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.service;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -14,7 +14,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import ca.team2.crapmap.Bathroom;
+import ca.team2.crapmap.controller.MapsActivity;
+import ca.team2.crapmap.model.Bathroom;
+import ca.team2.crapmap.model.Hours;
+import ca.team2.crapmap.util.RequestType;
+import ca.team2.crapmap.model.Review;
+import ca.team2.crapmap.model.User;
 
 /**
  * Created by geoffreycaven on 2017-03-15.

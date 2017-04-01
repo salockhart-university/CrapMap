@@ -1,12 +1,9 @@
-package ca.team2.crapmap;
-
-import android.util.Log;
+package ca.team2.crapmap.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by geoffreycaven on 2017-03-15.

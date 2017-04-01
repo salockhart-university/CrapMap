@@ -6,7 +6,7 @@
     android:id="@+id/activity_preview_bathroom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.team2.crapmap.PreviewBathroomActivity">
+    tools:context="ca.team2.crapmap.controller.PreviewBathroomActivity">
 
     <TextView
         android:id="@+id/text_bathroom"

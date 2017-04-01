@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.util;
 
 import static android.os.FileObserver.DELETE;
 

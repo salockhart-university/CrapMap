@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.controller;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import ca.team2.crapmap.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

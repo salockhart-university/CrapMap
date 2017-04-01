@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.controller;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ca.team2.crapmap.R;
+import ca.team2.crapmap.model.Bathroom;
+import ca.team2.crapmap.model.Review;
 
 public class PreviewBathroomActivity extends AppCompatActivity {
 

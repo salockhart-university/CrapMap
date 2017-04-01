@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.controller;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -17,7 +17,6 @@ import android.support.v4.content.ContextCompat;
 import android.Manifest;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +43,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import ca.team2.crapmap.Bathroom;
+import ca.team2.crapmap.R;
+import ca.team2.crapmap.util.RequestType;
+import ca.team2.crapmap.service.RetrieveBathrooms;
+import ca.team2.crapmap.model.Bathroom;
+import ca.team2.crapmap.model.Hours;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,

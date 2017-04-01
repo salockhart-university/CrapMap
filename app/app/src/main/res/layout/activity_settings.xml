@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.team2.crapmap.SettingsActivity">
+    tools:context="ca.team2.crapmap.controller.SettingsActivity">
 
     <ImageView
         android:id="@+id/settings_user_icon"

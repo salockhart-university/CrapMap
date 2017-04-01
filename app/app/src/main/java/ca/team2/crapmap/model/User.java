@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

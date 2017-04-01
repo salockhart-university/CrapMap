@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.service;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;

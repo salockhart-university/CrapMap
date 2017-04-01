@@ -1,4 +1,4 @@
-package ca.team2.crapmap;
+package ca.team2.crapmap.controller;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import ca.team2.crapmap.R;
 
 public class LoginActivity extends AppCompatActivity {
 
