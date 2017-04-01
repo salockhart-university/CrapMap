@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import ca.team2.crapmap.util.RequestType;
 
@@ -22,6 +23,7 @@ public class BathroomService {
     private static final String BASE_URL = "https://crap-map-server.herokuapp.com/";
     private static final String BASE_BATHROOMS = BASE_URL + "bathroom/";
     private static final String GET_BATHROOMS = BASE_BATHROOMS + "?lat=%f&long=%f&radius=%d";
+    private static final String ADD_COMMMENT = BASE_BATHROOMS + "%s/review";
 
     public static void getBathrooms(Activity activity, String dialogText, LatLng currentLocation, int radius, final RequestHandler handler) {
         try {
@@ -99,6 +101,37 @@ public class BathroomService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public static void addComment(String bathroomID, float cleanliness, float accessibility, float availability, String comment, String userToken, final RequestHandler handler) {
+        try {
+            URL url = new URL(String.format(ADD_COMMMENT, bathroomID));
+
+            JSONObject body = new JSONObject();
+            JSONObject stars = new JSONObject();
+
+            stars.put("cleanliness", cleanliness);
+            stars.put("availability", availability);
+            stars.put("accessibility", accessibility);
+
+            body.put("stars", stars);
+            body.put("review", comment);
+
+            HashMap<String, String> headers = null;
+            if (userToken != null) {
+                headers = new HashMap<>();
+                headers.put("Authorization", userToken);
+            }
+
+            Request request = new Request(RequestType.POST, url, body, headers, new RequestHandler() {
+                @Override
+                public void callback(Object result) {
+                    handler.callback(result);
+                }
+            });
+            request.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
