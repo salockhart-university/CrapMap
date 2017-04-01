@@ -331,8 +331,19 @@ public class MapsActivity extends AppCompatActivity implements
             case(NEW_BATHROOM_CREATED): {
                 if (resultCode == Activity.RESULT_OK) {
                     mMap.clear();
-                    //TODO: get location again here too, or just make a new marker
                     getBathrooms();
+                    Bathroom bathroom = (Bathroom)data.getSerializableExtra("response");
+                    Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
+                    Double userLat = currentLocation.latitude;
+                    Double userLng = currentLocation.longitude;
+                    if (bathroom != null) {
+                        intent.putExtra("bathroom", bathroom);
+                        intent.putExtra("bathroomLat", userLat);
+                        intent.putExtra("bathroomLng", userLng);
+                        intent.putExtra("userLat", userLat);
+                        intent.putExtra("userLng", userLng);
+                        startActivity(intent);
+                    }
                 } else {
                     //do nothing
                 }
