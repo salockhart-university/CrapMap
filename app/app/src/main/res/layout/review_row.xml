@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
                 android:paddingLeft="3dp"
-                android:text="Anon"
+                android:text="@string/label_unknown_user"
                 android:textStyle="bold" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
-                android:text="Accessibility"
+                android:text="@string/label_accessibility"
                 android:textSize="10sp" />
 
             <TextView
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
-                android:text="Availability"
+                android:text="@string/label_availability"
                 android:textSize="10sp" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
-                android:text="Cleanliness"
+                android:text="@string/label_cleanliness"
                 android:textSize="10sp" />
 
         </LinearLayout>

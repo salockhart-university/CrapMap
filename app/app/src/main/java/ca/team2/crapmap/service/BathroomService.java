@@ -20,6 +20,8 @@ import ca.team2.crapmap.util.RequestType;
 public class BathroomService {
 
     private static final String BASE_URL = Request.BASE_URL;
+    private static final String DISTANCE_API_BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
+    private static final String GMAPS_WEB_API_KEY = "AIzaSyCVgqOxC2tsWMDj9LhkEq3Dtqhr4cfukR8";
     private static final String BASE_BATHROOMS = BASE_URL + "bathroom/";
     private static final String GET_BATHROOMS = BASE_BATHROOMS + "?lat=%f&long=%f&radius=%d";
     private static final String ADD_COMMMENT = BASE_BATHROOMS + "%s/review";
@@ -123,6 +125,28 @@ public class BathroomService {
             }
 
             Request request = new Request(RequestType.POST, url, body, headers, new RequestHandler() {
+                @Override
+                public void callback(Object result) {
+                    handler.callback(result);
+                }
+            });
+            request.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getBathroomTravelTime(LatLng currentLocation, LatLng bathroomLocation, final RequestHandler handler) {
+        try {
+            String urlString = DISTANCE_API_BASE_URL;
+            urlString += "?units=metric";
+            urlString += "&origins=" + currentLocation.latitude + "," + currentLocation.longitude;
+            urlString += "&destinations=" + bathroomLocation.latitude + "," + bathroomLocation.longitude;
+            urlString += "&mode=walking";
+            urlString += "&key=" + GMAPS_WEB_API_KEY;
+            URL url = new URL(urlString);
+
+            Request request = new Request(RequestType.GET, url, new RequestHandler() {
                 @Override
                 public void callback(Object result) {
                     handler.callback(result);
