@@ -1,9 +1,12 @@
 package ca.team2.crapmap.model;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by geoffreycaven on 2017-03-15.
@@ -44,9 +47,13 @@ public class Bathroom implements Serializable {
         this.name = name;
     }
 
-    public Boolean getRequiresPurchase() { return requiresPurchase; }
+    public Boolean getRequiresPurchase() {
+        return requiresPurchase;
+    }
 
-    public void setRequiresPurchase(Boolean requiresPurchase) { this.requiresPurchase = requiresPurchase; }
+    public void setRequiresPurchase(Boolean requiresPurchase) {
+        this.requiresPurchase = requiresPurchase;
+    }
 
     public LatLng getLocation() {
         return location;
@@ -72,16 +79,36 @@ public class Bathroom implements Serializable {
         this.hours = hours;
     }
 
+    public Boolean isOpen() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        for (Hours hours : getHours()) {
+            Log.i("hours", " " + hours);
+        }
+        Hours currHours = getHoursForDay(day);
+        if (currHours != null)
+            Log.i("currHours", currHours.toString());
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+        double combo = hour + (min / 100.0);
+        Log.i("combo", "" + combo);
+        return currHours != null && currHours.getOpen() <= combo && currHours.getClose() >= combo;
+    }
+
     public Boolean hasAnyHours() {
         for (Hours dayHours : this.hours) {
-            if (dayHours != null) { return true; }
+            if (dayHours != null) {
+                return true;
+            }
         }
         return false;
     }
 
     public Hours getHoursForDay(int day) {
         for (Hours dayHours : this.hours) {
-            if (dayHours !=null && dayHours.getDay_of_week() == day) { return dayHours; }
+            if (dayHours != null && dayHours.getDay_of_week() == day) {
+                return dayHours;
+            }
         }
         return null;
     }
@@ -93,7 +120,7 @@ public class Bathroom implements Serializable {
             avail += curr.getAvailability();
             access += curr.getAccessibility();
         }
-        if(reviews.size() != 0) {
+        if (reviews.size() != 0) {
             clean /= reviews.size();
             avail /= reviews.size();
             access /= reviews.size();

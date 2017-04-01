@@ -39,6 +39,7 @@ public class BathroomInfoAdapter implements GoogleMap.InfoWindowAdapter {
         if (curr == null) {
             return null;
         }
+
         TextView name_preview = (TextView) v.findViewById(R.id.bathroom_name_preview);
         RatingBar cleanliness_preview = (RatingBar) v.findViewById(R.id.cleanliness_preview);
         RatingBar accessibility_preview = (RatingBar) v.findViewById(R.id.accessibility_preview);
@@ -46,6 +47,7 @@ public class BathroomInfoAdapter implements GoogleMap.InfoWindowAdapter {
         TextView number_reviews = (TextView) v.findViewById(R.id.number_reviews);
         TextView hours_preview = (TextView) v.findViewById(R.id.open_status_preview);
         TextView req_purchase = (TextView) v.findViewById(R.id.requires_purchase_preview);
+
         name_preview.setText(marker.getTitle());
         if (curr.getReviews().size() == 0) {
             number_reviews.setText("No Reviews");
@@ -70,22 +72,14 @@ public class BathroomInfoAdapter implements GoogleMap.InfoWindowAdapter {
         }
         Hours currHours = curr.getHoursForDay(day);
 
-        if (currHours != null) {
-            Log.i("currHours", currHours.toString());
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int min = calendar.get(Calendar.MINUTE);
-            double combo = hour + (min / 100);
-            Log.i("combo", "" + combo);
-            if (currHours.getOpen() <= combo && currHours.getClose() >= combo) {
+        if (curr.hasAnyHours()) {
+            if (curr.isOpen()) {
                 hours_preview.setText(activity.getResources().getString(R.string.bathroom_open));
                 hours_preview.setTextColor(activity.getResources().getColor(R.color.colorGreen));
             } else {
                 hours_preview.setText(activity.getResources().getString(R.string.bathroom_closed));
                 hours_preview.setTextColor(activity.getResources().getColor(R.color.colorRed));
             }
-        } else if (curr.hasAnyHours()) {
-            hours_preview.setText(activity.getResources().getString(R.string.bathroom_closed));
-            hours_preview.setTextColor(activity.getResources().getColor(R.color.colorRed));
         } else {
             hours_preview.setHeight(0);
         }

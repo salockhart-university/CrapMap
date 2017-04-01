@@ -269,8 +269,11 @@ public class MapsActivity extends AppCompatActivity implements
                     MarkerOptions options = new MarkerOptions();
                     options.position(curr.getLocation());
                     options.title(curr.getName());
-                    //TODO: make grey if location is closed
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                    if (!curr.hasAnyHours() || (curr.hasAnyHours() && curr.isOpen())) {
+                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    } else {
+                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    }
                     Marker newMarker = mMap.addMarker(options);
                     newMarker.setTag(curr);
                     bathroomMarkers.add(newMarker);
