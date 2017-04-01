@@ -1,5 +1,6 @@
 package ca.team2.crapmap.controller;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +23,8 @@ import ca.team2.crapmap.model.Bathroom;
 import ca.team2.crapmap.model.Review;
 
 public class PreviewBathroomActivity extends AppCompatActivity {
+
+    static final int NEW_COMMENT_REQUEST = 1;  // The request code
 
     public Bathroom bathroom;
     private List<Review> reviewList = new ArrayList<Review>();
@@ -125,7 +128,17 @@ public class PreviewBathroomActivity extends AppCompatActivity {
             String url = ""; //getIntent().getStringExtra("baseApiUrl") + getIntent().getStringExtra("id") + "/review";
             intent.putExtra("bathroomID", bathroomID);
             intent.putExtra("reviewURL", url);
-            startActivity(intent);
+            startActivityForResult(intent, NEW_COMMENT_REQUEST);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_COMMENT_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                loadBaseStats();
+                generateReviewModule();
+            }
         }
     }
 

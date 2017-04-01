@@ -57,7 +57,6 @@ public class NewCommentActivity extends AppCompatActivity {
                 String response = (String) result;
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("response", response);
-                //TODO: send bad response if request failed
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }
