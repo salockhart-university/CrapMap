@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -45,6 +46,12 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_bathroom);
 
+        LayoutInflater inflater = getLayoutInflater();
+
+        review_listView = (ListView) findViewById(R.id.review_listView);
+        View header = inflater.inflate(R.layout.preview_bathroom_header, null);
+        review_listView.addHeaderView(header);
+
         Intent intent = this.getIntent();
         bathroom = (Bathroom)intent.getSerializableExtra("bathroom");
         currentLocation = new LatLng(intent.getDoubleExtra("userLat", 0), intent.getDoubleExtra("userLng", 0));
@@ -58,7 +65,7 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         text_travel_time = (TextView) findViewById(R.id.text_travel_time);
         text_requires_purchase = (TextView) findViewById(R.id.text_requires_purchase);
         text_is_open = (TextView) findViewById(R.id.text_is_open);
-        review_listView = (ListView) findViewById(R.id.review_listView);
+
         FloatingActionButton fab_newComment = (FloatingActionButton) findViewById(R.id.fab_newComment);
         fab_newComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +93,8 @@ public class PreviewBathroomActivity extends AppCompatActivity {
             text_requires_purchase.setText(getResources().getString(R.string.label_requires_purchase));
         } else {
             text_requires_purchase.setText("");
+            text_requires_purchase.setHeight(0);
+            text_requires_purchase.setPadding(0,0,0,0);
         }
         if (bathroom.hasAnyHours() && bathroom.isOpen()) {
             text_is_open.setText(getResources().getString(R.string.bathroom_open));
@@ -95,6 +104,8 @@ public class PreviewBathroomActivity extends AppCompatActivity {
             text_is_open.setTextColor(getResources().getColor(R.color.colorRed));
         } else {
             text_is_open.setText("");
+            text_requires_purchase.setHeight(0);
+            text_requires_purchase.setPadding(0,0,0,0);
         }
 
     }

@@ -1,193 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_preview_bathroom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ca.team2.crapmap.controller.PreviewBathroomActivity">
 
-    <RelativeLayout
+    <ListView
+        android:id="@+id/review_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/text_bathroom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:paddingTop="10dp"
-            android:text="bathroom_name"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/text_travel_time"
-            android:text="@string/label_loading_travel_time"
-            android:textColor="@color/colorBlue"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_bathroom"
-            android:layout_marginTop="5dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/text_travel_time"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/clean_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="5dp"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/text_cleanliness"
-                    android:layout_width="100dp"
-                    android:layout_height="fill_parent"
-                    android:layout_marginRight="16dp"
-                    android:text="@string/label_cleanliness"
-                    android:gravity="center"
-                    android:textSize="14sp" />
-
-                <RatingBar
-                    android:id="@+id/rating_average_cleanliness"
-                    style="@style/Widget.AppCompat.RatingBar.Indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:contextClickable="false"
-                    android:numStars="5"
-                    android:rating="3"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/avail_row"
-                android:layout_below="@+id/clean_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="5dp"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/text_availability"
-                    android:layout_width="100dp"
-                    android:layout_height="fill_parent"
-                    android:layout_marginRight="16dp"
-                    android:text="@string/label_availability"
-                    android:gravity="center"
-                    android:textSize="14sp" />
-
-                <RatingBar
-                    android:id="@+id/rating_average_availability"
-                    style="@style/Widget.AppCompat.RatingBar.Indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:contextClickable="false"
-                    android:numStars="5"
-                    android:rating="3"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/access_row"
-                android:layout_below="@+id/avail_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="5dp"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/text_accessibility"
-                    android:layout_width="100dp"
-                    android:layout_height="fill_parent"
-                    android:layout_marginRight="16dp"
-                    android:text="@string/label_accessibility"
-                    android:gravity="center"
-                    android:textSize="14sp" />
-
-                <RatingBar
-                    android:id="@+id/rating_average_accessibility"
-                    style="@style/Widget.AppCompat.RatingBar.Indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:contextClickable="false"
-                    android:numStars="5"
-                    android:rating="3"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_requires_purchase"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@color/colorRed"
-                android:gravity="center"
-                android:text="placeholder"/>
-
-            <TextView
-                android:id="@+id/text_is_open"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:gravity="center"
-                android:text="placeholder"/>
-
-        </LinearLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/text_reviews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginBottom="5dp"
-            android:layout_above="@+id/review_listView"
-            android:text="@string/label_reviews"
-            android:textStyle="bold" />
-
-        <ListView
-            android:id="@+id/review_listView"
-            android:layout_width="match_parent"
-            android:layout_height="224dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true" />
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_newComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_24dp" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 
