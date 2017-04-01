@@ -10,11 +10,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
-import ca.team2.crapmap.service.PostNewBathroom;
 import ca.team2.crapmap.R;
 import ca.team2.crapmap.fragment.TimePickerFragment;
+import ca.team2.crapmap.service.BathroomService;
+import ca.team2.crapmap.service.RequestHandler;
 
 public class NewBathroomActivity extends AppCompatActivity {
     private EditText name;
@@ -174,20 +177,16 @@ public class NewBathroomActivity extends AppCompatActivity {
         }
 
         String[] times =  arrayListTimes.toArray(new String[arrayListTimes.size()]);
-        PostNewBathroom postNewBathroom = new PostNewBathroom(baseApiUrl + "bathroom",
-                name.getText().toString(), latitude, longitude, requiresPurchase.isChecked(),
-                times);
-        String response = null;
-        try{
-            response = (String)postNewBathroom.execute().get();
-        }
-        catch(Exception e){}
-
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("response", response);
-        //TODO: send bad response if request failed
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        BathroomService.addBathroom(name.getText().toString(), latitude, longitude, requiresPurchase.isChecked(), times, new RequestHandler() {
+            @Override
+            public void callback(Object result) {
+                String response = (String) result;
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("response", response);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
+        });
     }
 
     public void showTimePickerDialog(View v, TextView textView) {
