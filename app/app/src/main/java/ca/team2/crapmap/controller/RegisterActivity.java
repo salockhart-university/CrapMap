@@ -1,16 +1,8 @@
 package ca.team2.crapmap.controller;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.support.v7.app.AppCompatActivity;
-
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,31 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import ca.team2.crapmap.R;
-import ca.team2.crapmap.util.RequestType;
+import ca.team2.crapmap.service.RequestHandler;
+import ca.team2.crapmap.service.UserService;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserRegisterTask userRegisterTask = null;
 
     // UI references.
     private EditText mNameView;
     private EditText mUsernameView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mRegisterFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +50,9 @@ public class RegisterActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
-
-        mRegisterFormView = findViewById(R.id.register_form);
-        mProgressView = findViewById(R.id.register_progress);
     }
 
     private void attemptRegister() {
-        if (userRegisterTask != null) {
-            return;
-        }
-
         mNameView.setError(null);
         mUsernameView.setError(null);
         mPasswordView.setError(null);
@@ -115,130 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            userRegisterTask = new UserRegisterTask(name, username, password);
-            userRegisterTask.execute((Void) null);
-        }
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            UserService.register(this, "Registering...", name, username, password, new RequestHandler() {
                 @Override
-                public void onAnimationEnd(Animator animation) {
-                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                public void callback(Object result) {
+                    finish();
                 }
             });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mName;
-        private final String mUsername;
-        private final String mPassword;
-
-        private static final String REGISTER_URL = "https://crap-map-server.herokuapp.com/user";
-
-        private InputStream is;
-
-        UserRegisterTask(String name, String username, String password) {
-            mName = name;
-            mUsername = username;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                URL url = new URL(REGISTER_URL);
-                HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-                connection.setRequestMethod(RequestType.POST.getValue());
-                connection.setDoInput(true);
-                connection.setDoOutput(true);
-                connection.setUseCaches(false);
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setReadTimeout(10000);
-                connection.setConnectTimeout(15000);
-                connection.connect();
-
-                JSONObject body = new JSONObject();
-                body.put("name", mName);
-                body.put("username", mUsername);
-                body.put("password", mPassword);
-
-                DataOutputStream printout = new DataOutputStream(connection.getOutputStream());
-                printout.writeBytes(body.toString());
-                printout.flush();
-                printout.close();
-
-                is = connection.getInputStream();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                is.close();
-                Log.d("Register Return", sb.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("Async Exception", "" + e);
-                return false;
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            userRegisterTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mUsernameView.setError(getString(R.string.error_duplicate_username));
-                mUsernameView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            userRegisterTask = null;
-            showProgress(false);
         }
     }
 }

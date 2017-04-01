@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -20,7 +19,7 @@ import ca.team2.crapmap.util.RequestType;
 
 public class BathroomService {
 
-    private static final String BASE_URL = "https://crap-map-server.herokuapp.com/";
+    private static final String BASE_URL = Request.BASE_URL;
     private static final String BASE_BATHROOMS = BASE_URL + "bathroom/";
     private static final String GET_BATHROOMS = BASE_BATHROOMS + "?lat=%f&long=%f&radius=%d";
     private static final String ADD_COMMMENT = BASE_BATHROOMS + "%s/review";

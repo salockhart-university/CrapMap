@@ -24,6 +24,8 @@ import ca.team2.crapmap.util.RequestType;
 
 public class Request extends AsyncTask<Void, Void, String> {
 
+    static final String BASE_URL = "https://crap-map-server.herokuapp.com/";
+
     private RequestType method;
     private URL url;
     private JSONObject body = null;
