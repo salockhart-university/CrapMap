@@ -37,8 +37,7 @@ public class PreviewBathroomActivity extends AppCompatActivity {
     private List<Review> reviewList = new ArrayList<Review>();
 
     private RatingBar avg_accessibility, avg_availability, avg_cleanliness;
-    private TextView bathroom_name;
-    private TextView text_travel_time;
+    private TextView bathroom_name, text_travel_time, text_is_open, text_requires_purchase;
     private ListView review_listView;
 
     @Override
@@ -57,6 +56,8 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         avg_cleanliness = (RatingBar) findViewById(R.id.rating_average_cleanliness);
         bathroom_name = (TextView) findViewById(R.id.text_bathroom);
         text_travel_time = (TextView) findViewById(R.id.text_travel_time);
+        text_requires_purchase = (TextView) findViewById(R.id.text_requires_purchase);
+        text_is_open = (TextView) findViewById(R.id.text_is_open);
         review_listView = (ListView) findViewById(R.id.review_listView);
         FloatingActionButton fab_newComment = (FloatingActionButton) findViewById(R.id.fab_newComment);
         fab_newComment.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +82,20 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         avg_cleanliness.setRating(avgRatings[0]);
         avg_availability.setRating(avgRatings[1]);
         avg_accessibility.setRating(avgRatings[2]);
+        if (bathroom.getRequiresPurchase()) {
+            text_requires_purchase.setText(getResources().getString(R.string.label_requires_purchase));
+        } else {
+            text_requires_purchase.setText("");
+        }
+        if (bathroom.hasAnyHours() && bathroom.isOpen()) {
+            text_is_open.setText(getResources().getString(R.string.bathroom_open));
+            text_is_open.setTextColor(getResources().getColor(R.color.colorGreen));
+        } else if (bathroom.hasAnyHours()) {
+            text_is_open.setText(getResources().getString(R.string.bathroom_closed));
+            text_is_open.setTextColor(getResources().getColor(R.color.colorRed));
+        } else {
+            text_is_open.setText("");
+        }
 
     }
 
