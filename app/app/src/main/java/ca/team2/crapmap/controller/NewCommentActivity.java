@@ -10,9 +10,14 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.EditText;
 
+import ca.team2.crapmap.model.Hours;
+import ca.team2.crapmap.model.Review;
 import ca.team2.crapmap.service.BathroomService;
 import ca.team2.crapmap.R;
 import ca.team2.crapmap.service.RequestHandler;
+import ca.team2.crapmap.model.Bathroom;
+
+import org.json.*;
 
 public class NewCommentActivity extends AppCompatActivity {
 
@@ -54,9 +59,10 @@ public class NewCommentActivity extends AppCompatActivity {
         BathroomService.addComment(bathroomID, clean, access, avail, commentString, userToken, new RequestHandler() {
             @Override
             public void callback(Object result) {
-                String response = (String) result;
+                Bathroom bathroom = (Bathroom) result;
+
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("response", response);
+                resultIntent.putExtra("responseBathroom", bathroom);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }

@@ -172,8 +172,10 @@ public class PreviewBathroomActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NEW_COMMENT_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                loadBaseStats();
-                generateReviewModule();
+                bathroom = (Bathroom)data.getSerializableExtra("responseBathroom");
+                reviewList = bathroom.getReviews();
+                loadBaseStats();//load initial data
+                generateReviewModule();//generate listview contents
             }
         }
     }
