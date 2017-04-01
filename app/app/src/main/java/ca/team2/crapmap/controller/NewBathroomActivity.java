@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import ca.team2.crapmap.R;
 import ca.team2.crapmap.fragment.TimePickerFragment;
+import ca.team2.crapmap.model.Bathroom;
 import ca.team2.crapmap.service.BathroomService;
 import ca.team2.crapmap.service.RequestHandler;
 
@@ -192,12 +193,11 @@ public class NewBathroomActivity extends AppCompatActivity {
                     "Invalid Times", Toast.LENGTH_SHORT).show();
             return;
         }
-        BathroomService.addBathroom(nameString, latitude, longitude, requiresPurchase.isChecked(), times, new RequestHandler() {
+        BathroomService.addBathroom(nameString, latitude, longitude, requiresPurchase.isChecked(), times, new RequestHandler<Bathroom>() {
             @Override
-            public void callback(Object result) {
-                String response = (String) result;
+            public void callback(Bathroom result) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("response", response);
+                resultIntent.putExtra("response", result);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }

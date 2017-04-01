@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
+import ca.team2.crapmap.model.User;
 import ca.team2.crapmap.util.RequestType;
 
 /**
@@ -19,7 +20,7 @@ public class UserService {
     private static final String BASE_USER = BASE_URL + "user/";
     private static final String LOGIN_USER = BASE_USER + "login";
 
-    public static void register(Activity activity, String dialogText, String name, String username, String password, final RequestHandler handler) {
+    public static void register(Activity activity, String dialogText, String name, String username, String password, final RequestHandler<User> handler) {
         try {
             URL url = new URL(BASE_USER);
 
@@ -28,10 +29,19 @@ public class UserService {
             body.put("username", username);
             body.put("password", password);
 
-            Request request = new Request(RequestType.POST, url, body, new RequestHandler() {
+            Request request = new Request(RequestType.POST, url, body, new RequestHandler<String>() {
                 @Override
-                public void callback(Object result) {
-                    handler.callback(result);
+                public void callback(String result) {
+                    if (result == null) {
+                        handler.callback(null);
+                        return;
+                    }
+                    try {
+                        handler.callback(JSONParser.parseUser(new JSONObject(result)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        handler.callback(null);
+                    }
                 }
             });
             request.setProgressDialog(activity, dialogText);
@@ -41,7 +51,7 @@ public class UserService {
         }
     }
 
-    public static void login(Activity activity, String dialogText, String username, String password, final RequestHandler handler) {
+    public static void login(Activity activity, String dialogText, String username, String password, final RequestHandler<JSONObject> handler) {
         try {
             URL url = new URL(LOGIN_USER);
 
@@ -49,15 +59,15 @@ public class UserService {
             body.put("username", username);
             body.put("password", password);
 
-            Request request = new Request(RequestType.POST, url, body, new RequestHandler() {
+            Request request = new Request(RequestType.POST, url, body, new RequestHandler<String>() {
                 @Override
-                public void callback(Object result) {
+                public void callback(String result) {
                     if (result == null) {
                         handler.callback(null);
                         return;
                     }
                     try {
-                        handler.callback(new JSONObject((String) result));
+                        handler.callback(new JSONObject(result));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         handler.callback(null);

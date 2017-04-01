@@ -94,12 +94,12 @@ public class PreviewBathroomActivity extends AppCompatActivity {
 
     public void getTravelTime() {
 
-        BathroomService.getBathroomTravelTime(currentLocation, bathroom.getLocation(), new RequestHandler() {
+        BathroomService.getBathroomTravelTime(currentLocation, bathroom.getLocation(), new RequestHandler<String>() {
             @Override
-            public void callback(Object result) {
+            public void callback(String result) {
                 try {
-                    JSONObject response = new JSONObject((String) result);
-                    Log.i("DISTANCE MATRIX RESP", (String) result);
+                    JSONObject response = new JSONObject(result);
+                    Log.i("DISTANCE MATRIX RESP", result);
                     String duration = response.getJSONArray("rows")
                             .getJSONObject(0)
                             .getJSONArray("elements")

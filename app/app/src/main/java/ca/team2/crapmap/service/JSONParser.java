@@ -94,4 +94,8 @@ public class JSONParser {
                 user
         );
     }
+
+    static User parseUser(JSONObject user) throws JSONException {
+        return new User(user);
+    }
 }

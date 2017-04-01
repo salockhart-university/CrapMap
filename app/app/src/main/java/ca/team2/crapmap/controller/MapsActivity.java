@@ -38,6 +38,8 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import ca.team2.crapmap.R;
@@ -257,14 +259,14 @@ public class MapsActivity extends AppCompatActivity implements
     private void getBathrooms() {
         Log.i("getBathrooms", "executing");
         final Activity activity = this;
-        BathroomService.getBathrooms(activity, "Finding bathrooms near you...", currentLocation, 3000, new RequestHandler() {
+        BathroomService.getBathrooms(activity, "Finding bathrooms near you...", currentLocation, 3000, new RequestHandler<ArrayList<Bathroom>>() {
             @Override
-            public void callback(Object result) {
+            public void callback(ArrayList<Bathroom> result) {
                 if (result == null) {
                     Toast.makeText(activity, "Cannot retrieve data, please try again later", Toast.LENGTH_LONG).show();
                     return;
                 }
-                ArrayList<Bathroom> bathroomList = (ArrayList<Bathroom>)result;
+                ArrayList<Bathroom> bathroomList = result;
                 for (Bathroom curr : bathroomList) {
                     MarkerOptions options = new MarkerOptions();
                     options.position(curr.getLocation());
