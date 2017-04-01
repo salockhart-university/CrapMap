@@ -56,6 +56,7 @@
             android:inputType="textMultiLine"
             android:hint="@string/label_comment"
             android:text=""
+            android:gravity="top"
             android:layout_alignBottom="@+id/btSave"
             android:layout_below="@+id/rbAvailability" />
 
