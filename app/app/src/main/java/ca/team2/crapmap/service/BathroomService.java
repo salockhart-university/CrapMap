@@ -9,8 +9,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import ca.team2.crapmap.model.Bathroom;
 import ca.team2.crapmap.util.RequestType;
 
 /**
@@ -26,14 +28,18 @@ public class BathroomService {
     private static final String GET_BATHROOMS = BASE_BATHROOMS + "?lat=%f&long=%f&radius=%d";
     private static final String ADD_COMMMENT = BASE_BATHROOMS + "%s/review";
 
-    public static void getBathrooms(Activity activity, String dialogText, LatLng currentLocation, int radius, final RequestHandler handler) {
+    public static void getBathrooms(Activity activity, String dialogText, LatLng currentLocation, int radius, final RequestHandler<ArrayList<Bathroom>> handler) {
         try {
             URL url = new URL(String.format(GET_BATHROOMS, currentLocation.latitude, currentLocation.longitude, radius));
-            Request request = new Request(RequestType.GET, url, new RequestHandler() {
+            Request request = new Request(RequestType.GET, url, new RequestHandler<String>() {
                 @Override
-                public void callback(Object result) {
+                public void callback(String result) {
+                    if (result == null) {
+                        handler.callback(null);
+                        return;
+                    }
                     try {
-                        handler.callback(JSONParser.parseBathroomList(new JSONArray((String)result)));
+                        handler.callback(JSONParser.parseBathroomList(new JSONArray(result)));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         handler.callback(null);
@@ -47,14 +53,14 @@ public class BathroomService {
         }
     }
 
-    public static void addBathroom(String name, double latitude, double longitude, boolean requiresPurchase, String[] hours, final RequestHandler handler) {
+    public static void addBathroom(String name, double latitude, double longitude, boolean requiresPurchase, String[] hours, final RequestHandler<Bathroom> handler) {
         try {
             URL url = new URL(BASE_BATHROOMS);
 
             JSONObject body = new JSONObject();
             JSONObject location = new JSONObject();
             JSONArray jsonTimes = new JSONArray();
-            for(int i=0; i<hours.length; i++){
+            for (int i = 0; i < hours.length; i++) {
                 JSONObject time = new JSONObject();
                 String[] hoursSplit = hours[i].split(" ");
                 switch (hoursSplit[0]) {
@@ -92,10 +98,19 @@ public class BathroomService {
             body.put("requiresPurchase", requiresPurchase);
             body.put("hours", jsonTimes);
 
-            Request request = new Request(RequestType.POST, url, body, new RequestHandler() {
+            Request request = new Request(RequestType.POST, url, body, new RequestHandler<String>() {
                 @Override
-                public void callback(Object result) {
-                    handler.callback(result);
+                public void callback(String result) {
+                    if (result == null) {
+                        handler.callback(null);
+                        return;
+                    }
+                    try {
+                        handler.callback(JSONParser.parseBathroom(new JSONObject(result)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        handler.callback(null);
+                    }
                 }
             });
             request.execute();
@@ -104,7 +119,7 @@ public class BathroomService {
         }
     }
 
-    public static void addComment(String bathroomID, float cleanliness, float accessibility, float availability, String comment, String userToken, final RequestHandler handler) {
+    public static void addComment(String bathroomID, float cleanliness, float accessibility, float availability, String comment, String userToken, final RequestHandler<Bathroom> handler) {
         try {
             URL url = new URL(String.format(ADD_COMMMENT, bathroomID));
 
@@ -124,11 +139,15 @@ public class BathroomService {
                 headers.put("Authorization", userToken);
             }
 
-            Request request = new Request(RequestType.POST, url, body, headers, new RequestHandler() {
+            Request request = new Request(RequestType.POST, url, body, headers, new RequestHandler<String>() {
                 @Override
-                public void callback(Object result) {
+                public void callback(String result) {
+                    if (result == null) {
+                        handler.callback(null);
+                        return;
+                    }
                     try {
-                        handler.callback(JSONParser.parseBathroom(new JSONObject((String)result)));
+                        handler.callback(JSONParser.parseBathroom(new JSONObject(result)));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         handler.callback(null);
@@ -141,7 +160,7 @@ public class BathroomService {
         }
     }
 
-    public static void getBathroomTravelTime(LatLng currentLocation, LatLng bathroomLocation, final RequestHandler handler) {
+    public static void getBathroomTravelTime(LatLng currentLocation, LatLng bathroomLocation, final RequestHandler<String> handler) {
         try {
             String urlString = DISTANCE_API_BASE_URL;
             urlString += "?units=metric";
@@ -151,9 +170,9 @@ public class BathroomService {
             urlString += "&key=" + GMAPS_WEB_API_KEY;
             URL url = new URL(urlString);
 
-            Request request = new Request(RequestType.GET, url, new RequestHandler() {
+            Request request = new Request(RequestType.GET, url, new RequestHandler<String>() {
                 @Override
-                public void callback(Object result) {
+                public void callback(String result) {
                     handler.callback(result);
                 }
             });

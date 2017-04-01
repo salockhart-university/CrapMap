@@ -80,20 +80,18 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            UserService.login(this, "Logging in...", username, password, new RequestHandler() {
+            UserService.login(this, "Logging in...", username, password, new RequestHandler<JSONObject>() {
                 @Override
-                public void callback(Object result) {
-                    JSONObject json = (JSONObject) result;
-
-                    if (json == null) {
+                public void callback(JSONObject result) {
+                    if (result == null) {
                         mPasswordView.setError(getString(R.string.error_incorrect_password));
                         mPasswordView.requestFocus();
                     } else {
                         String token = null;
                         String name = null;
                         try {
-                            token = json.get("token").toString();
-                            name = json.get("name").toString();
+                            token = result.get("token").toString();
+                            name = result.get("name").toString();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

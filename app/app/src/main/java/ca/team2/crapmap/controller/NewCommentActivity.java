@@ -56,13 +56,11 @@ public class NewCommentActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("LOGIN_TOKEN", 0);
         String userToken = settings.getString("token", null);
 
-        BathroomService.addComment(bathroomID, clean, access, avail, commentString, userToken, new RequestHandler() {
+        BathroomService.addComment(bathroomID, clean, access, avail, commentString, userToken, new RequestHandler<Bathroom>() {
             @Override
-            public void callback(Object result) {
-                Bathroom bathroom = (Bathroom) result;
-
+            public void callback(Bathroom result) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("responseBathroom", bathroom);
+                resultIntent.putExtra("responseBathroom", result);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }

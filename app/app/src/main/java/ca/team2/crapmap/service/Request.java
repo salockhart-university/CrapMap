@@ -29,11 +29,11 @@ public class Request extends AsyncTask<Void, Void, String> {
     private URL url;
     private JSONObject body = null;
     private HashMap<String, String> headers = null;
-    private RequestHandler handler;
+    private RequestHandler<String> handler;
 
     private ProgressDialog pDialog = null;
 
-    Request(RequestType method, URL url, JSONObject body, HashMap<String, String> headers, RequestHandler handler) {
+    Request(RequestType method, URL url, JSONObject body, HashMap<String, String> headers, RequestHandler<String> handler) {
         this.method = method;
         this.url = url;
         this.body = body;
@@ -41,21 +41,14 @@ public class Request extends AsyncTask<Void, Void, String> {
         this.handler = handler;
     }
 
-    Request(RequestType method, URL url, JSONObject body, RequestHandler handler) {
+    Request(RequestType method, URL url, JSONObject body, RequestHandler<String> handler) {
         this.method = method;
         this.url = url;
         this.body = body;
         this.handler = handler;
     }
 
-    Request(RequestType method, URL url, HashMap<String, String> headers, RequestHandler handler) {
-        this.method = method;
-        this.url = url;
-        this.headers = headers;
-        this.handler = handler;
-    }
-
-    Request(RequestType method, URL url, RequestHandler handler) {
+    Request(RequestType method, URL url, RequestHandler<String> handler) {
         this.method = method;
         this.url = url;
         this.handler = handler;

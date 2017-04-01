@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ca.team2.crapmap.R;
+import ca.team2.crapmap.model.User;
 import ca.team2.crapmap.service.RequestHandler;
 import ca.team2.crapmap.service.UserService;
 
@@ -85,9 +86,9 @@ public class RegisterActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            UserService.register(this, "Registering...", name, username, password, new RequestHandler() {
+            UserService.register(this, "Registering...", name, username, password, new RequestHandler<User>() {
                 @Override
-                public void callback(Object result) {
+                public void callback(User result) {
                     if (result == null) {
                         mUsernameView.setError(getString(R.string.error_duplicate_username));
                         mUsernameView.requestFocus();

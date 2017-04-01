@@ -48,6 +48,7 @@
     <TextView
         android:id="@+id/mondayStart"
         android:hint="Open"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/hours"
@@ -55,6 +56,7 @@
     <TextView
         android:id="@+id/mondayEnd"
         android:hint="Close"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/hours"
@@ -68,6 +70,7 @@
     <TextView
         android:id="@+id/tuesdayStart"
         android:hint="Open"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/monday"
@@ -75,6 +78,7 @@
     <TextView
         android:id="@+id/tuesdayEnd"
         android:hint="Close"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/monday"
@@ -88,6 +92,7 @@
     <TextView
         android:id="@+id/wednesdayStart"
         android:hint="Open"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tuesday"
@@ -95,6 +100,7 @@
     <TextView
         android:id="@+id/wednesdayEnd"
         android:hint="Close"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tuesday"
@@ -108,6 +114,7 @@
     <TextView
         android:id="@+id/thursdayStart"
         android:hint="Open"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/wednesday"
@@ -115,6 +122,7 @@
     <TextView
         android:id="@+id/thursdayEnd"
         android:hint="Close"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/wednesday"
@@ -128,6 +136,7 @@
     <TextView
         android:id="@+id/fridayStart"
         android:hint="Open"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/thursday"
@@ -135,6 +144,7 @@
     <TextView
         android:id="@+id/fridayEnd"
         android:hint="Close"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/thursday"
@@ -148,6 +158,7 @@
     <TextView
         android:id="@+id/saturdayStart"
         android:hint="Open"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/friday"
@@ -155,6 +166,7 @@
     <TextView
         android:id="@+id/saturdayEnd"
         android:hint="Close"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/friday"
@@ -168,6 +180,7 @@
     <TextView
         android:id="@+id/sundayStart"
         android:hint="Open"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/saturday"
@@ -175,6 +188,7 @@
     <TextView
         android:id="@+id/sundayEnd"
         android:hint="Close"
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/saturday"
