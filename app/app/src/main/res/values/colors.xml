@@ -9,6 +9,7 @@
     <color name="dividerColor">#BDBDBD</color>
     <color name="colorRed">#FF0000</color>
     <color name="colorGreen">#00ff00</color>
+    <color name="colorBlue">#2196F3</color>
     <color name="colorBlack">#000000</color>
     <color name="background_crapmap_light">#fafafa</color>
 </resources>

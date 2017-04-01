@@ -11,6 +11,14 @@
     <string name="bathroom_open">Open Now</string>
     <string name="bathroom_closed">Closed Now</string>
 
+    <!-- Strings relating to bathroom previews -->
+    <string name="label_loading_travel_time">Getting travel time...</string>
+    <string name="label_cleanliness">Cleanliness:</string>
+    <string name="label_accessibility">Accessibility:</string>
+    <string name="label_availability">Availability:</string>
+    <string name="label_reviews">Reviews</string>
+    <string name="label_unknown_user">Anonymous</string>
+
     <!-- Strings related to login -->
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_register">Register</string>
@@ -41,9 +49,6 @@
 
     <!-- Strings for new comment -->
     <string name="new_comment_title">Create New Comment</string>
-    <string name="label_cleanliness">Cleanliness:</string>
-    <string name="label_accessibility">Accessibility:</string>
-    <string name="label_availability">Availability:</string>
     <string name="label_comment">Your Comment:</string>
     <string name="label_comment_placeholder">Comment here</string>
 

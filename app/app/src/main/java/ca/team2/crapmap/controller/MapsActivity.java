@@ -418,9 +418,15 @@ public class MapsActivity extends AppCompatActivity implements
 
     private void loadBathroomPreview(Marker marker) {
         Intent intent = new Intent(MapsActivity.this, PreviewBathroomActivity.class);
+        Double userLat = currentLocation.latitude;
+        Double userLng = currentLocation.longitude;
         Bathroom bathroom = (Bathroom) marker.getTag();
         if (bathroom != null) {
             intent.putExtra("bathroom", bathroom);
+            intent.putExtra("bathroomLat", bathroom.getLocation().latitude);
+            intent.putExtra("bathroomLng", bathroom.getLocation().longitude);
+            intent.putExtra("userLat", userLat);
+            intent.putExtra("userLng", userLng);
             startActivity(intent);
         }
     }
