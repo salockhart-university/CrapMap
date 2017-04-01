@@ -88,7 +88,12 @@ public class RegisterActivity extends AppCompatActivity {
             UserService.register(this, "Registering...", name, username, password, new RequestHandler() {
                 @Override
                 public void callback(Object result) {
-                    finish();
+                    if (result == null) {
+                        mUsernameView.setError(getString(R.string.error_duplicate_username));
+                        mUsernameView.requestFocus();
+                    } else {
+                        finish();
+                    }
                 }
             });
         }

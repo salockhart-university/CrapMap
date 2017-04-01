@@ -3,7 +3,6 @@ package ca.team2.crapmap.service;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONObject;
 
