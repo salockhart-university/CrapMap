@@ -16,7 +16,7 @@
     <string name="label_cleanliness">Cleanliness:</string>
     <string name="label_accessibility">Accessibility:</string>
     <string name="label_availability">Availability:</string>
-    <string name="label_reviews">Reviews</string>
+    <string name="label_reviews">All Reviews</string>
     <string name="label_unknown_user">Anonymous</string>
 
     <!-- Strings related to login -->
