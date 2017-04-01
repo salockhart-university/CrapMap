@@ -1,7 +1,5 @@
 package ca.team2.crapmap.util;
 
-import static android.os.FileObserver.DELETE;
-
 /**
  * Created by geoffreycaven on 2017-03-15.
  */

@@ -44,8 +44,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import ca.team2.crapmap.R;
-import ca.team2.crapmap.util.RequestType;
-import ca.team2.crapmap.service.RetrieveBathrooms;
+import ca.team2.crapmap.service.RequestHandler;
+import ca.team2.crapmap.service.BathroomService;
 import ca.team2.crapmap.model.Bathroom;
 import ca.team2.crapmap.model.Hours;
 
@@ -259,8 +259,27 @@ public class MapsActivity extends AppCompatActivity implements
 
     private void getBathrooms() {
         Log.i("getBathrooms", "executing");
-        RetrieveBathrooms getTask = new RetrieveBathrooms(BASE_API_URL + "bathroom/?lat=" + currentLocation.latitude + "&long=" + currentLocation.longitude + "&radius=3000", RequestType.GET, this);
-        getTask.execute();
+        final Activity activity = this;
+        BathroomService.getBathrooms(activity, "Finding bathrooms near you...", currentLocation, 3000, new RequestHandler() {
+            @Override
+            public void callback(Object result) {
+                if (result == null) {
+                    Toast.makeText(activity, "Cannot retrieve data, please try again later", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                ArrayList<Bathroom> bathroomList = (ArrayList<Bathroom>)result;
+                for (Bathroom curr : bathroomList) {
+                    MarkerOptions options = new MarkerOptions();
+                    options.position(curr.getLocation());
+                    options.title(curr.getName());
+                    //TODO: make grey if location is closed
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                    Marker newMarker = mMap.addMarker(options);
+                    newMarker.setTag(curr);
+                    bathroomMarkers.add(newMarker);
+                }
+            }
+        });
     }
 
     private Marker getClosestBathroomMarker() {
@@ -293,25 +312,6 @@ public class MapsActivity extends AppCompatActivity implements
             marker.remove();
         }
         bathroomMarkers.clear();
-    }
-
-    public void bathroomCallback(Object result) {
-        if (result == null) {
-            Toast.makeText(this, "Cannot retrieve data, please try again later", Toast.LENGTH_LONG)
-                    .show();
-            return;
-        }
-        ArrayList<Bathroom> bathroomList = (ArrayList<Bathroom>)result;
-        for (Bathroom curr : bathroomList) {
-            MarkerOptions options = new MarkerOptions();
-            options.position(curr.getLocation());
-            options.title(curr.getName());
-            //TODO: make grey if location is closed
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-            Marker newMarker = mMap.addMarker(options);
-            newMarker.setTag(curr);
-            bathroomMarkers.add(newMarker);
-        }
     }
 
     private void openNewBathroomActivity() {
