@@ -127,7 +127,12 @@ public class BathroomService {
             Request request = new Request(RequestType.POST, url, body, headers, new RequestHandler() {
                 @Override
                 public void callback(Object result) {
-                    handler.callback(result);
+                    try {
+                        handler.callback(JSONParser.parseBathroom(new JSONObject((String)result)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        handler.callback(null);
+                    }
                 }
             });
             request.execute();
