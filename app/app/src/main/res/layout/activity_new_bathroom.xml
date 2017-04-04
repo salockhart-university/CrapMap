@@ -193,11 +193,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/saturday"
         android:layout_marginLeft="250dp"/>
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_bathroom_submit"
-        android:text="@string/label_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_done_white_24dp" />
 </RelativeLayout>

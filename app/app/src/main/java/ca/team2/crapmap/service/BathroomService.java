@@ -1,6 +1,7 @@
 package ca.team2.crapmap.service;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -60,6 +61,16 @@ public class BathroomService {
             JSONObject body = new JSONObject();
             JSONObject location = new JSONObject();
             JSONArray jsonTimes = new JSONArray();
+            if(hours.length == 0){
+                String[] days = {"mon", "tues", "wed", "thurs", "fri", "sat", "sun"};
+                for(int i=0; i<days.length; i++){
+                    JSONObject time = new JSONObject();
+                    time.put("day", days[i]);
+                    time.put("open", "0000");
+                    time.put("close", "2359");
+                    jsonTimes.put(time);
+                }
+            }
             for (int i = 0; i < hours.length; i++) {
                 JSONObject time = new JSONObject();
                 String[] hoursSplit = hours[i].split(" ");

@@ -2,16 +2,14 @@ package ca.team2.crapmap.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -35,7 +33,7 @@ public class NewBathroomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_bathroom);
         name = (EditText)findViewById(R.id.new_bathroom_name);
         requiresPurchase = (CheckBox)findViewById(R.id.new_bathroom_requires_purchase);
-        Button submit = (Button) findViewById(R.id.new_bathroom_submit);
+        FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.new_bathroom_submit);
 
         days = new CheckBox[7];
         startTimes = new TextView[7];
@@ -188,11 +186,6 @@ public class NewBathroomActivity extends AppCompatActivity {
         }
 
         String[] times =  arrayListTimes.toArray(new String[arrayListTimes.size()]);
-        if(times.length == 0){
-            Toast.makeText(getApplicationContext(),
-                    "Invalid Times", Toast.LENGTH_SHORT).show();
-            return;
-        }
         BathroomService.addBathroom(nameString, latitude, longitude, requiresPurchase.isChecked(), times, new RequestHandler<Bathroom>() {
             @Override
             public void callback(Bathroom result) {
