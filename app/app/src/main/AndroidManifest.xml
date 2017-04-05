@@ -25,6 +25,7 @@
 
         <activity
             android:name=".controller.MapsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,27 +36,33 @@
         <activity
             android:name=".controller.NewBathroomActivity"
             android:label="@string/new_bathroom_title"
+            android:screenOrientation="portrait"
             android:parentActivityName=".controller.MapsActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".controller.PreviewBathroomActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".controller.MapsActivity" />
         <activity
             android:name=".controller.SettingsActivity"
             android:label="Settings"
+            android:screenOrientation="portrait"
             android:parentActivityName=".controller.MapsActivity">
         </activity>
         <activity
             android:name=".controller.LoginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:parentActivityName=".controller.SettingsActivity"/>
         <activity
             android:name=".controller.RegisterActivity"
             android:label="@string/title_activity_register"
+            android:screenOrientation="portrait"
             android:parentActivityName=".controller.SettingsActivity"/>
         <activity
             android:name=".controller.NewCommentActivity"
             android:label="@string/new_comment_title"
+            android:screenOrientation="portrait"
             android:parentActivityName=".controller.PreviewBathroomActivity"
             android:theme="@style/AppTheme" />
 
